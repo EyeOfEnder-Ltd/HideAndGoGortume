@@ -1,0 +1,26 @@
+name: Gortume
+main: me.avery246813579.HideAndGo.HideAndGo
+version: 1.0
+author: avery246813579
+description: Gortume A simple plugin.
+commands:
+  Set:
+    description: Sets gortume points.
+  S:
+    description: Sets gortume points.  
+  Create:
+    description: Creates a arena.
+  Join:
+    description: Sets gortume points.   
+  Countdown:
+    description: Sets gortume points. 
+  C:
+    description: Sets gortume points. 
+  Leave:
+    description: Sets gortume points.                
+  L:
+    description: Sets gortume points.                
+  Pass:
+    description: Sets gortume points.  
+  Enable:
+    description: Discription.                                          
