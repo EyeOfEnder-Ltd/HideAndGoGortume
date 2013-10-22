@@ -26,9 +26,12 @@ import com.eyeofender.gortume.listeners.PositionListener;
 import com.eyeofender.gortume.listeners.SignListener;
 import com.eyeofender.gortume.util.DatabaseManager;
 import com.eyeofender.gortume.util.Permissions;
+import com.eyeofender.massapi.MassAPI;
 
 public class HideAndGo extends JavaPlugin {
 
+    private Logger log;
+    private MassAPI api;
     private List<GameManager> activeArenas = new ArrayList<GameManager>();
     private DatabaseManager database;
 
@@ -61,11 +64,21 @@ public class HideAndGo extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        PluginManager pm = this.getServer().getPluginManager();
+        this.log = this.getLogger();
+
+        try {
+            this.api = (MassAPI) pm.getPlugin("MassAPI");
+        } catch (NoClassDefFoundError e) {
+            log.severe("Unsupported or no version of MassAPI found.");
+            pm.disablePlugin(this);
+            return;
+        }
+
         fc.configSave();
         configHelper.loadConfig();
         perm.enablePermissions();
 
-        PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(new PositionListener(this), this);
         pm.registerEvents(new MovementListener(this), this);
         pm.registerEvents(new GameListener(this), this);
@@ -79,12 +92,14 @@ public class HideAndGo extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // TODO Disable Permissions.
+        if (api != null) {
+            for (GameManager gm : this.getActiveArenas()) {
 
-        for (GameManager gm : this.getActiveArenas()) {
-
-            gm.stopArena();
+                gm.stopArena();
+            }
         }
+
+        log.info("Successfully disabled.");
     }
 
     /***************************************************************************
