@@ -1,9 +1,9 @@
-package com.eyeofender.gortume.Timers;
+package com.eyeofender.gortume.timers;
 
 import org.bukkit.entity.Player;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Game.GameManager;
+import com.eyeofender.gortume.game.GameManager;
 
 public class GameTimer implements Runnable {
 

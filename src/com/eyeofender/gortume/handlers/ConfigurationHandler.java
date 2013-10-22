@@ -1,11 +1,11 @@
-package com.eyeofender.gortume.Handlers;
+package com.eyeofender.gortume.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Game.Arena;
-import com.eyeofender.gortume.Game.GameManager;
+import com.eyeofender.gortume.game.Arena;
+import com.eyeofender.gortume.game.GameManager;
 
 public class ConfigurationHandler {
 

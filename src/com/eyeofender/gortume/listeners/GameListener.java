@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Listeners;
+package com.eyeofender.gortume.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Game.GameManager;
+import com.eyeofender.gortume.game.GameManager;
 
 public class GameListener implements Listener {
 

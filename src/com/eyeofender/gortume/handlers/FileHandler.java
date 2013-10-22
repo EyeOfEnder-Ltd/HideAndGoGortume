@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Handlers;
+package com.eyeofender.gortume.handlers;
 
 import java.io.File;
 import java.io.IOException;

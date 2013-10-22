@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Game;
+package com.eyeofender.gortume.game;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

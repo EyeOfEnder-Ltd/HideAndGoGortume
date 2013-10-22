@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Listeners;
+package com.eyeofender.gortume.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Game.GameManager;
+import com.eyeofender.gortume.game.GameManager;
 
 public class MovementListener implements Listener{
 

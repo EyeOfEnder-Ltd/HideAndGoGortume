@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Timers;
+package com.eyeofender.gortume.timers;
 
 public class RandomDropTimer implements Runnable {
 

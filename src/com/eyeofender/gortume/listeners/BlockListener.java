@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Listeners;
+package com.eyeofender.gortume.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -7,7 +7,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Game.GameManager;
+import com.eyeofender.gortume.game.GameManager;
 
 public class BlockListener implements Listener{
 

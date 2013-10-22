@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Listeners;
+package com.eyeofender.gortume.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Game.GameManager;
+import com.eyeofender.gortume.game.GameManager;
 
 public class SignListener implements Listener {
 

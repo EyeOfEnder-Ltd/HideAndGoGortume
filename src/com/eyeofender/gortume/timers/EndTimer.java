@@ -1,8 +1,8 @@
-package com.eyeofender.gortume.Timers;
+package com.eyeofender.gortume.timers;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Game.GameManager;
-import com.eyeofender.gortume.Handlers.FireworkHandler;
+import com.eyeofender.gortume.game.GameManager;
+import com.eyeofender.gortume.handlers.FireworkHandler;
 
 public class EndTimer implements Runnable {
 

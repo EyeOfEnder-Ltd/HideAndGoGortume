@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Listeners;
+package com.eyeofender.gortume.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

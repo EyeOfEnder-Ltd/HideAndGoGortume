@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Util;
+package com.eyeofender.gortume.util;
 
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;

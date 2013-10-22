@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Game;
+package com.eyeofender.gortume.game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +18,13 @@ import org.bukkit.potion.PotionEffectType;
 import org.kitteh.tag.TagAPI;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Timers.BatTimer;
-import com.eyeofender.gortume.Timers.EndTimer;
-import com.eyeofender.gortume.Timers.GameTimer;
-import com.eyeofender.gortume.Timers.GortumeTimer;
-import com.eyeofender.gortume.Timers.LobbyTimer;
-import com.eyeofender.gortume.Timers.SoundTimer;
-import com.eyeofender.gortume.Util.Cuboid;
+import com.eyeofender.gortume.timers.BatTimer;
+import com.eyeofender.gortume.timers.EndTimer;
+import com.eyeofender.gortume.timers.GameTimer;
+import com.eyeofender.gortume.timers.GortumeTimer;
+import com.eyeofender.gortume.timers.LobbyTimer;
+import com.eyeofender.gortume.timers.SoundTimer;
+import com.eyeofender.gortume.util.Cuboid;
 
 public class GameManager {
 

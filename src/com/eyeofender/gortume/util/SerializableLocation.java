@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Util;
+package com.eyeofender.gortume.util;
 
 public class SerializableLocation {
 

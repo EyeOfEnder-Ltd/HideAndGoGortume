@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Game;
+package com.eyeofender.gortume.game;
 
 import java.util.Random;
 

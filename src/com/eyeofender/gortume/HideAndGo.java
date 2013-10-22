@@ -12,19 +12,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.eyeofender.gortume.Game.Arena;
-import com.eyeofender.gortume.Game.ArenaCreator;
-import com.eyeofender.gortume.Game.GameManager;
-import com.eyeofender.gortume.Handlers.ConfigurationHandler;
-import com.eyeofender.gortume.Handlers.FileHandler;
-import com.eyeofender.gortume.Listeners.BlockListener;
-import com.eyeofender.gortume.Listeners.DropListener;
-import com.eyeofender.gortume.Listeners.GameListener;
-import com.eyeofender.gortume.Listeners.MovementListener;
-import com.eyeofender.gortume.Listeners.PlayerListener;
-import com.eyeofender.gortume.Listeners.PositionListener;
-import com.eyeofender.gortume.Listeners.SignListener;
-import com.eyeofender.gortume.Util.Permissions;
+import com.eyeofender.gortume.game.Arena;
+import com.eyeofender.gortume.game.ArenaCreator;
+import com.eyeofender.gortume.game.GameManager;
+import com.eyeofender.gortume.handlers.ConfigurationHandler;
+import com.eyeofender.gortume.handlers.FileHandler;
+import com.eyeofender.gortume.listeners.BlockListener;
+import com.eyeofender.gortume.listeners.DropListener;
+import com.eyeofender.gortume.listeners.GameListener;
+import com.eyeofender.gortume.listeners.MovementListener;
+import com.eyeofender.gortume.listeners.PlayerListener;
+import com.eyeofender.gortume.listeners.PositionListener;
+import com.eyeofender.gortume.listeners.SignListener;
+import com.eyeofender.gortume.util.Permissions;
 
 public class HideAndGo extends JavaPlugin{
 	

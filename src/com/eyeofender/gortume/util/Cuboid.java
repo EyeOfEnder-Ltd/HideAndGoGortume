@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Util;
+package com.eyeofender.gortume.util;
 
 import java.util.ArrayList;
 import java.util.List;

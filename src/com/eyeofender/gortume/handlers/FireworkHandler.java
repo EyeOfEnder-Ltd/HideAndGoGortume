@@ -1,4 +1,4 @@
-package com.eyeofender.gortume.Handlers;
+package com.eyeofender.gortume.handlers;
 
 import java.util.Random;
 
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.Game.GameManager;
+import com.eyeofender.gortume.game.GameManager;
 
 public class FireworkHandler {
 
