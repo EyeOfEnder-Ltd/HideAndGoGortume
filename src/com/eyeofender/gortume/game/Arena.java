@@ -16,6 +16,7 @@ import com.eyeofender.gortume.HideAndGo;
 
 public class Arena {
 
+    /** Hi **/
     private HideAndGo plugin;
 
     private boolean disabled = false;
