@@ -48,6 +48,8 @@ public class SignListener implements Listener {
                         event.setLine(3, ChatColor.GRAY + "-=- In-Game -=-");
                     }
 
+                    gm.getArena().addSignLocation(event.getBlock().getLocation());
+
                 } else {
                     plugin.sendMessage(event.getPlayer(), "Sign creation failed. Line 2 and 3 have to be empty.");
                     event.setLine(0, ChatColor.DARK_RED + event.getLine(0));
