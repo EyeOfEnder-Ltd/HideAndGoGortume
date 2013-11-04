@@ -16,7 +16,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.kitteh.tag.PlayerReceiveNameTagEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.eyeofender.gortume.HideAndGo;
 import com.eyeofender.gortume.game.GameManager;
@@ -38,7 +39,14 @@ public class GameListener implements Listener {
 					if(event.getClickedBlock().getType() == Material.EMERALD_BLOCK){
 						gm.addClicked(event.getPlayer());
 						gm.checkPlayersAlive();
-						gm.tellArena(event.getPlayer() + " has clicked the emerald.");
+						gm.tellArena(event.getPlayer().getName() + " has clicked the emerald.");
+					}
+				}else if(event.getItem().equals(Material.CARROT_ITEM)){
+					if(plugin.getInArena().contains(event.getPlayer())){
+						event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, 2));
+						event.getPlayer().getInventory().remove(Material.CARROT_ITEM);
+
+						plugin.sendMessage(event.getPlayer(), "You have consumed a speed carrot!");
 					}
 				}
 			}
@@ -64,15 +72,6 @@ public class GameListener implements Listener {
 		if (plugin.getInArena().contains(event.getPlayer())){
 			if(event.getCause() == TeleportCause.COMMAND){
 				plugin.sendMessage(event.getPlayer(), "You can not teleport in game.");
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onNameTag(PlayerReceiveNameTagEvent event) {
-		for(Player player : plugin.getInArena()){
-			if (event.getNamedPlayer().getName().equals(player.getName())) {
-				event.setTag("_");
 			}
 		}
 	}
@@ -164,8 +163,10 @@ public class GameListener implements Listener {
 							}else{
 								if(gm.getGortumePlayer() == attacker){
 									if(!gm.getSpec().contains(attacked)){
-										e.setCancelled(false);
 										gm.checkPlayersAlive();
+										
+										attacked.damage(5.0);;
+										
 									}else{
 										e.setCancelled(true);
 									}

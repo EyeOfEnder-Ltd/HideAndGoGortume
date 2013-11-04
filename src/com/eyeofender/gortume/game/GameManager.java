@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.kitteh.tag.TagAPI;
 
 import com.eyeofender.gortume.HideAndGo;
 import com.eyeofender.gortume.timers.BatTimer;
@@ -107,6 +106,7 @@ public class GameManager {
             if (isInLobby()) {
                 if (plugin.getConfigHelper().getMaxPlayers() >= this.getArenaPlayers().size()) {
                     if (!plugin.getInArena().contains(player)) {
+
                         addPlayer(player);
                     } else {
                         plugin.sendMessage(player, "You are already in a arena.");
@@ -123,24 +123,35 @@ public class GameManager {
     }
 
     public void addPlayer(Player player) {
+    	/** Clear Inventory **/
+        player.getInventory().clear();
+		player.getInventory().clear();
+		player.getInventory().setHelmet(new ItemStack(Material.AIR));
+		player.getInventory().setChestplate(new ItemStack(Material.AIR));
+		player.getInventory().setLeggings(new ItemStack(Material.AIR));
+		player.getInventory().setBoots(new ItemStack(Material.AIR));
+		
+		player.getInventory().remove(Material.COMPASS);
+		player.getInventory().remove(Material.WATCH);
+		player.getInventory().remove(Material.DIAMOND_HELMET);
+
+		player.getInventory().setContents(player.getInventory().getContents());
+		
+		player.updateInventory();
+		
         plugin.getInArena().add(player);
         player.teleport(arena.getLobbySpawn());
         arenaPlayers.add(player);
 
         /** Updates Players Inventory **/
         player.setGameMode(GameMode.SURVIVAL);
-        player.setAllowFlight(true);
+        player.setAllowFlight(false);
         player.setFlySpeed(0.1F);
-        player.setFlying(true);
+        player.setFlying(false);
 
         /** Resets exp levels **/
         player.setLevel(0);
         player.setExp(0);
-
-        /** Clear Inventory **/
-        player.getInventory().clear();
-
-        /** Updates Signs **/
 
         /** Clears the Players Potion Effects **/
         this.clearPotionEffects(player);
@@ -161,7 +172,7 @@ public class GameManager {
     }
 
     public void setUpGame() {
-        this.setLobby(true);
+    	this.setLobby(true);
         lobby = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new LobbyTimer(plugin, this), 20L, 20L);
     }
 
@@ -211,18 +222,17 @@ public class GameManager {
                 player.setFlySpeed(0.1F);
                 player.setFlying(false);
                 alive.add(player);
-                TagAPI.refreshPlayer(player);
 
                 if (player != this.getGortumePlayer()) {
                     player.teleport(arena.getRegularSpawn());
                     player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1000000, 1));
                     plugin.getNoMove().add(player);
-
-                    alive.remove(this.getGortumePlayer());
                 }
             }
 
             this.setGortume(true);
+            alive.remove(this.getGortumePlayer());
+
             gortume = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new GortumeTimer(plugin, this), 20L, 20L);
             this.setInLobby(false);
 
@@ -239,12 +249,14 @@ public class GameManager {
     public void autoPlace() {
         this.getArena().getRandomBlock().getBlock().setType(Material.EMERALD_BLOCK);
         this.setBlockLocation(this.getArena().getRandomBlock());
+        plugin.getEmeralds().add(this.getArena().getRandomBlock());
         this.tellArena("Random block has been set.");
         startGortume();
     }
 
     public void startGortume() {
         /** Cancels the Timer **/
+    	plugin.getServer().getScheduler().cancelTask(this.getGortume());
         setGortumeTimer(-1);
         setGortume(false);
 
@@ -269,6 +281,7 @@ public class GameManager {
         }
 
         plugin.getServer().getScheduler().cancelTask(getGortume());
+        
         for (Player player : arenaPlayers) {
             if (player == this.getGortumePlayer()) {
                 player.teleport(this.getArena().getGortumeSpawn());
@@ -284,6 +297,8 @@ public class GameManager {
         this.game = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new GameTimer(plugin, this), 20L, 20L);
         this.bat = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new BatTimer(plugin, this), 20L, 20L);
         this.sound = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new SoundTimer(plugin, this), 20L, 20L);
+  
+        this.tellArena("The game has started. Good luck!");
     }
 
     public void addSpectator(Player player) {
@@ -355,7 +370,9 @@ public class GameManager {
     }
 
     public void leaveArena(Player player) {
-        player.teleport(arena.getEndLocation());
+        arena.updateSigns();
+    	
+    	player.teleport(arena.getEndLocation());
         /** Leaves all Arrays **/
         this.getArenaPlayers().remove(player);
         this.alive.remove(player);
@@ -369,11 +386,8 @@ public class GameManager {
         player.setFoodLevel(20);
         player.setLevel(0);
         player.setExp(0);
-        TagAPI.refreshPlayer(player);
 
-        arena.updateSigns();
-
-        if (this.getArenaPlayers().size() == 0) {
+        if (this.getArenaPlayers().size() <= 1) {
             this.stopArena();
             return;
         }
@@ -383,22 +397,24 @@ public class GameManager {
 
             this.gortumePlayer = null;
 
-            for (Player playerr : this.getArenaPlayers()) {
-                this.leaveArena(playerr);
-                this.addPlayer(playerr);
+            if(this.getArenaPlayers().size() != 0){
+	            for (Player playerr : this.getArenaPlayers()) {
+	                this.leaveArena(playerr);
+	                this.addPlayer(playerr);
+	                this.setUpGame();
+	                return;
+	            }
+            }else{
+            	this.stopArena();
             }
-
-            this.setUpGame();
-            return;
         }
     }
 
     public void stopArena() {
-        if (this.getArenaPlayers().size() > 0) {
-            for (Player player : this.getArenaPlayers()) {
-                this.leaveArena(player);
+        if (this.getArenaPlayers().size() >= 0) {
+           
+        	for (Player player : this.getArenaPlayers()) {
                 player.teleport(arena.getEndLocation());
-                /** Leaves all Arrays **/
                 this.getArenaPlayers().remove(player);
                 this.alive.remove(player);
                 this.getSpec().remove(player);
@@ -411,22 +427,68 @@ public class GameManager {
                 player.setFoodLevel(20);
                 player.setLevel(0);
                 player.setExp(0);
-            }
+        	}
+        	
+        	if(this.getGortumePlayer() != null){
+        		getGortumePlayer().teleport(arena.getEndLocation());
+                this.getArenaPlayers().remove(getGortumePlayer());
+                this.alive.remove(getGortumePlayer());
+                this.getSpec().remove(getGortumePlayer());
+                this.getGortumePlayers().remove(getGortumePlayer());
+                plugin.getInArena().remove(getGortumePlayer());
+                plugin.getNoMove().remove(getGortumePlayer());
+                this.clearPotionEffects(getGortumePlayer());
+                getGortumePlayer().getInventory().clear();
+                getGortumePlayer().setHealth(20);
+                getGortumePlayer().setFoodLevel(20);
+                getGortumePlayer().setLevel(0);
+                getGortumePlayer().setExp(0);
+        	}
+        	
+        	for (Player player : this.getSpec()) {
+                player.teleport(arena.getEndLocation());
+                this.getArenaPlayers().remove(player);
+                this.alive.remove(player);
+                this.getSpec().remove(player);
+                this.getGortumePlayers().remove(player);
+                plugin.getInArena().remove(player);
+                plugin.getNoMove().remove(player);
+                this.clearPotionEffects(player);
+                player.getInventory().clear();
+                player.setHealth(20);
+                player.setFoodLevel(20);
+                player.setLevel(0);
+                player.setExp(0);
+        	}
+        	
+        	
+
         }
 
         plugin.getInArena().remove(this);
+
         plugin.getServer().getScheduler().cancelTask(this.getLobby());
         plugin.getServer().getScheduler().cancelTask(this.getGortume());
         plugin.getServer().getScheduler().cancelTask(this.getGame());
         plugin.getServer().getScheduler().cancelTask(this.getEnd());
         plugin.getServer().getScheduler().cancelTask(this.getBat());
         plugin.getServer().getScheduler().cancelTask(this.getSound());
+        
+        this.setLobbyTimer(plugin.getConfigHelper().getLobbyTime());
+        this.setGameTimer(plugin.getConfigHelper().getGameTimer());
+        this.setGortumeTimer(plugin.getConfigHelper().getGortumeTimer());
+        this.setSoundTimer(plugin.getConfigHelper().getSoundTimer());
+        this.setBatTimer(plugin.getConfigHelper().getBatTimer());
+        this.setEndTimer(plugin.getConfigHelper().getEndTimer());
 
+        this.inLobby = true;
+        arena.updateSigns();
         this.getSpec().clear();
         this.getArenaPlayers().clear();
         this.getGortumePlayers().clear();
         this.getAlive().clear();
 
+        plugin.getEmeralds().remove(this.getArena().getRandomBlock());
         this.getArena().getRandomBlock().getBlock().setType(Material.AIR);
     }
 

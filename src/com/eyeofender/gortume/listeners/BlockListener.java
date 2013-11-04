@@ -30,6 +30,12 @@ public class BlockListener implements Listener{
 					gm.startGortume();
 					
 					gm.setBlockLocation(event.getBlockPlaced().getLocation());
+					plugin.getEmeralds().add(event.getBlockPlaced().getLocation());
+					
+			    	plugin.getServer().getScheduler().cancelTask(gm.getGortume());
+			        gm.setGortumeTimer(-1);
+			        gm.setGortume(false);
+
 					
 				}
 			
