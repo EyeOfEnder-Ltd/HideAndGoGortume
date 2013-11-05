@@ -1,12 +1,16 @@
 package com.eyeofender.gortume.items;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -15,11 +19,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.eyeofender.gortume.HideAndGo;
+import com.eyeofender.gortume.game.GameManager;
 import com.eyeofender.gortume.util.Permissions;
 
-public class Kits {
+public class Kits implements Listener{
 
 	private HideAndGo plugin;
+	private GameManager gm;
 	public static Inventory i;
 	
 	/** Permissions **/
@@ -34,9 +40,83 @@ public class Kits {
     GoldenApple ga = new GoldenApple(plugin);
     KnockbackStick ks = new KnockbackStick(plugin);
 	
-	public Kits(HideAndGo plugin){
+    /** List **/
+    private Map<Player, String> kits = new HashMap<Player, String>();
+    private List<Player> voted = new ArrayList<Player>();
+    
+    public Kits(HideAndGo plugin){
 		this.plugin = plugin;
 	}
+    
+	public Kits(HideAndGo plugin, GameManager gm){
+		this.plugin = plugin;
+		this.gm = gm;
+	}
+
+	
+	/**************************************
+	 * 
+	 *  			Action
+	 * 
+	 *************************************/
+	
+	public void addPlayer(Player player){
+		kits.put(player, "traveler");
+		this.voted.add(player);
+	}
+
+	public void vote(Player player, String kit){
+		if(plugin.getInArena().contains(player)){
+			if(kit.equalsIgnoreCase("traveler")){
+				kits.put(player, "traveler");
+			}else if(kit.equalsIgnoreCase("ninja")){
+				kits.put(player, "ninja");
+			}else if(kit.equalsIgnoreCase("tank")){
+				kits.put(player, "tank");
+			}else if(kit.equalsIgnoreCase("spy")){
+				kits.put(player, "spy");
+			}else if(kit.equalsIgnoreCase("god")){
+				kits.put(player, "god");
+			}else{
+				plugin.sendMessage(player, "Kit not found.");
+				return;
+			}
+			
+			if(!voted.contains(player)){
+				voted.add(player);
+			}
+			
+		}else{
+			plugin.sendMessage(player, "You have to be in a arena to vote.");
+		}
+	}
+	
+	public void giveItems(){
+		for(Player player : voted){
+			String kit = kits.get(player);
+			
+			if(kit.equalsIgnoreCase("traveler")){
+				traveler(player);
+			}else if(kit.equalsIgnoreCase("ninja")){
+				ninja(player);
+			}else if(kit.equalsIgnoreCase("tank")){
+				tank(player);
+			}else if(kit.equalsIgnoreCase("spy")){
+				spy(player);
+			}else if(kit.equalsIgnoreCase("god")){
+				god(player);
+			}else{
+				plugin.sendMessage(player, "Kit not found. Contact a admin!");
+				return;
+			}
+		}
+	}
+	
+	/**************************************
+	 * 
+	 *  			Inventory
+	 * 
+	 *************************************/
 	
 	public ItemStack kitTool() {
 		ItemStack is = new ItemStack(Material.EMERALD);
@@ -230,33 +310,52 @@ public class Kits {
 			}
 			
 			if(event.getItem() == this.traveler()){
-				event.setCancelled(true);
-				//PICK
+				if(player.hasPermission(p.traveler)){
+					event.setCancelled(true);
+					vote(player, "Traveler");
+				}else{
+					this.sendPermissions(player, "Traveler");
+				}
 				return;
 			}
 			
 			if(event.getItem() == this.ninja()){
-				event.setCancelled(true);
-				player.performCommand("gortume");
-				//PICK
+				if(player.hasPermission(p.ninja)){
+					event.setCancelled(true);
+					vote(player, "ninja");
+				}else{
+					this.sendPermissions(player, "ninja");
+				}
 				return;
 			}
 			
 			if(event.getItem() == this.spy()){
-				event.setCancelled(true);
-				//PICK
+				if(player.hasPermission(p.spy)){
+					event.setCancelled(true);
+					vote(player, "spy");
+				}else{
+					this.sendPermissions(player, "spy");
+				}
 				return;
 			}
 			
 			if(event.getItem() == this.tank()){
-				event.setCancelled(true);
-				//PICK
+				if(player.hasPermission(p.tank)){
+					event.setCancelled(true);
+					vote(player, "tank");
+				}else{
+					this.sendPermissions(player, "tank");
+				}
 				return;
 			}
 			
 			if(event.getItem() == this.god()){
-				event.setCancelled(true);
-				//PICK
+				if(player.hasPermission(p.god)){
+					event.setCancelled(true);
+					vote(player, "god");
+				}else{
+					this.sendPermissions(player, "god");
+				}
 				return;
 			}
 		}

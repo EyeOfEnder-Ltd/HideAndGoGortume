@@ -21,6 +21,7 @@ import com.eyeofender.gortume.handlers.FileHandler;
 import com.eyeofender.gortume.items.ConfusionCookie;
 import com.eyeofender.gortume.items.GoldenApple;
 import com.eyeofender.gortume.items.InvisiblePie;
+import com.eyeofender.gortume.items.Kits;
 import com.eyeofender.gortume.items.KnockbackStick;
 import com.eyeofender.gortume.items.SightPork;
 import com.eyeofender.gortume.items.SlownessSteak;
