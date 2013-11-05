@@ -18,27 +18,22 @@ import com.eyeofender.gortume.game.ArenaCreator;
 import com.eyeofender.gortume.game.GameManager;
 import com.eyeofender.gortume.handlers.ConfigurationHandler;
 import com.eyeofender.gortume.handlers.FileHandler;
-import com.eyeofender.gortume.items.ConfusionCookie;
-import com.eyeofender.gortume.items.GoldenApple;
-import com.eyeofender.gortume.items.InvisiblePie;
-import com.eyeofender.gortume.items.Kits;
-import com.eyeofender.gortume.items.KnockbackStick;
-import com.eyeofender.gortume.items.SightPork;
-import com.eyeofender.gortume.items.SlownessSteak;
-import com.eyeofender.gortume.items.SpeedCarrot;
+import com.eyeofender.gortume.kits.Bonus;
 import com.eyeofender.gortume.listeners.BlockListener;
 import com.eyeofender.gortume.listeners.GameListener;
 import com.eyeofender.gortume.listeners.MovementListener;
 import com.eyeofender.gortume.listeners.PositionListener;
 import com.eyeofender.gortume.listeners.SignListener;
 import com.eyeofender.gortume.util.DatabaseManager;
+import com.eyeofender.gortume.util.Metadata;
 import com.eyeofender.gortume.util.Permissions;
+
 //import com.eyeofender.massapi.MassAPI;
 
 public class HideAndGo extends JavaPlugin {
 
     private Logger log;
-    //private MassAPI api;
+    // private MassAPI api;
     private List<GameManager> activeArenas = new ArrayList<GameManager>();
     private DatabaseManager database;
 
@@ -59,7 +54,6 @@ public class HideAndGo extends JavaPlugin {
     private List<Player> noMove = new ArrayList<Player>();
     private List<Location> emeralds = new ArrayList<Location>();
 
-
     private Logger logger = Logger.getLogger("Minecraft");
 
     private FileHandler fc = new FileHandler(this);
@@ -77,12 +71,15 @@ public class HideAndGo extends JavaPlugin {
         this.log = this.getLogger();
 
         try {
-       //     this.api = (MassAPI) pm.getPlugin("MassAPI");
+            // this.api = (MassAPI) pm.getPlugin("MassAPI");
         } catch (NoClassDefFoundError e) {
             log.severe("Unsupported or no version of MassAPI found.");
             pm.disablePlugin(this);
             return;
         }
+
+        Metadata.init(this);
+        Bonus.init(this);
 
         fc.configSave();
         configHelper.loadConfig();
@@ -94,45 +91,36 @@ public class HideAndGo extends JavaPlugin {
         pm.registerEvents(new BlockListener(this), this);
         pm.registerEvents(new SignListener(this), this);
 
-        /** Enable Items **/
-        pm.registerEvents(new SpeedCarrot(this), this);
-        pm.registerEvents(new InvisiblePie(this), this);
-        pm.registerEvents(new SightPork(this), this);
-        pm.registerEvents(new SlownessSteak(this), this);
-        pm.registerEvents(new ConfusionCookie(this), this);
-        pm.registerEvents(new GoldenApple(this), this);
-        pm.registerEvents(new KnockbackStick(this), this);
-        
         database = new DatabaseManager(this);
     }
 
     @Override
     public void onDisable() {
-    	
-    	for(Location l : this.getEmeralds()){
-    		l.getBlock().setType(Material.AIR);
-    	}
-    	
-       // if (api != null) {
-            for (GameManager gm : this.getActiveArenas()) {
 
-                gm.stopArena();
-            }
-       // }
+        for (Location l : this.getEmeralds()) {
+            l.getBlock().setType(Material.AIR);
+        }
+
+        // if (api != null) {
+        for (GameManager gm : this.getActiveArenas()) {
+
+            gm.stopArena();
+        }
+        // }
 
         log.info("Successfully disabled.");
         perm.disablePermissions();
     }
-    
-    public void enableArenas(){
-    	List<String> arenas = new ArrayList<String>();
-    	arenas = this.getConfig().getStringList("enabled");
-    	for(String arena : arenas){
+
+    public void enableArenas() {
+        List<String> arenas = new ArrayList<String>();
+        arenas = this.getConfig().getStringList("enabled");
+        for (String arena : arenas) {
             Arena arenaa = new Arena(this, arena);
             GameManager gmn = new GameManager(this, arenaa);
 
             this.getActiveArenas().add(gmn);
-    	}
+        }
     }
 
     /***************************************************************************
@@ -260,10 +248,10 @@ public class HideAndGo extends JavaPlugin {
 
                     gm.joinArena(player);
 
-                }else{
-                	
-                	this.sendMessage(player, "Arena not found " + arena + ".");
-                	
+                } else {
+
+                    this.sendMessage(player, "Arena not found " + arena + ".");
+
                 }
 
             } else {
@@ -284,13 +272,13 @@ public class HideAndGo extends JavaPlugin {
 
                 if (this.getFc().getArena().contains(arena)) {
 
-                	for(GameManager gm : this.getActiveArenas()){
-                		if(gm.getArenaName() == arena){
-                			this.sendMessage(player, "Arena already running.");
-                			return false;
-                		}
-                	}
-                	
+                    for (GameManager gm : this.getActiveArenas()) {
+                        if (gm.getArenaName() == arena) {
+                            this.sendMessage(player, "Arena already running.");
+                            return false;
+                        }
+                    }
+
                     Arena arenaa = new Arena(this, arena);
                     GameManager gmn = new GameManager(this, arenaa);
 
@@ -322,22 +310,6 @@ public class HideAndGo extends JavaPlugin {
 
                 if (gm != null) {
                     gm.setUpGame();
-                    SpeedCarrot sc = new SpeedCarrot(this);
-                    InvisiblePie ip = new InvisiblePie(this);
-                    SightPork sp = new SightPork(this);
-                    SlownessSteak ss = new SlownessSteak(this);
-                    ConfusionCookie cc = new ConfusionCookie(this);
-                    GoldenApple ga = new GoldenApple(this);
-                    KnockbackStick ks = new KnockbackStick(this);
-                    
-                    player.getInventory().addItem(sc.speedCarrot());
-                    player.getInventory().addItem(ip.invisiblePie());
-                    player.getInventory().addItem(sp.sightPork());
-                    player.getInventory().addItem(ss.slownessSteak());
-                    player.getInventory().addItem(cc.confusionCookie());
-                    player.getInventory().addItem(ga.goldenApple());
-                    player.getInventory().addItem(ks.knockbackStick());
-                    
                     this.sendMessage(player, "Countdown has started.");
                 } else {
                     this.sendMessage(player, "You have to be in a arena to do this.");
@@ -497,11 +469,11 @@ public class HideAndGo extends JavaPlugin {
         return DatabaseManager.getDatabaseClasses();
     }
 
-	public List<Location> getEmeralds() {
-		return emeralds;
-	}
+    public List<Location> getEmeralds() {
+        return emeralds;
+    }
 
-	public void setEmeralds(List<Location> emeralds) {
-		this.emeralds = emeralds;
-	}
+    public void setEmeralds(List<Location> emeralds) {
+        this.emeralds = emeralds;
+    }
 }
