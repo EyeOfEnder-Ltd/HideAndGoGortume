@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.eyeofender.gortume.HideAndGo;
+import com.eyeofender.gortume.game.GameManager;
 import com.eyeofender.gortume.kits.Kit;
 
 public class Kits implements Listener {
@@ -29,68 +30,39 @@ public class Kits implements Listener {
 
     private Map<Player, String> kits = new HashMap<Player, String>();
     private List<Player> voted = new ArrayList<Player>();
-
-    public Kits(HideAndGo plugin) {
+    @SuppressWarnings("unused")
+	private GameManager gm;
+    
+    public Kits(HideAndGo plugin, GameManager gm) {
         this.plugin = plugin;
+        this.gm = gm;
     }
 
-    public void addPlayer(Player player) {
+    public Kits(HideAndGo plugin2) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public void addPlayer(Player player) {
         kits.put(player, "traveler");
         this.voted.add(player);
     }
+	
+	public Kits(){
+		
+	}
 
-    public void vote(Player player, String kit) {
-        if (plugin.getInArena().contains(player)) {
-            if (kit.equalsIgnoreCase("traveler")) {
-                kits.put(player, "traveler");
-            } else if (kit.equalsIgnoreCase("ninja")) {
-                kits.put(player, "ninja");
-            } else if (kit.equalsIgnoreCase("tank")) {
-                kits.put(player, "tank");
-            } else if (kit.equalsIgnoreCase("spy")) {
-                kits.put(player, "spy");
-            } else if (kit.equalsIgnoreCase("god")) {
-                kits.put(player, "god");
-            } else {
-                plugin.sendMessage(player, "Kit not found.");
-                return;
-            }
-
-            if (!voted.contains(player)) {
-                voted.add(player);
-            }
-
-        } else {
-            plugin.sendMessage(player, "You have to be in a arena to vote.");
-        }
-    }
-
-    public void giveItems() {
-        for (Player player : voted) {
-            String name = kits.get(player);
-            Kit kit = Kit.getByName(name);
-
-            if (kit != null) {
-                kit.equip(player);
-            } else {
-                plugin.sendMessage(player, "Kit not found. Contact a admin!");
-                return;
-            }
-        }
-    }
-
-    public ItemStack getKitTool() {
+    public static ItemStack getKitTool() {
         ItemStack is = new ItemStack(Material.EMERALD);
         ItemMeta im = is.getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.GREEN + "Click to chose a kit.");
+        lore.add(ChatColor.GREEN + "Left click to open tool.");
         im.setLore(lore);
         im.setDisplayName("" + ChatColor.GOLD + ChatColor.BOLD + "Kit Selection");
         is.setItemMeta(im);
         return is;
     }
 
-    private void showKitMenu(Player player) {
+    public static void showKitMenu(Player player) {
         inventory = Bukkit.getServer().createInventory(null, 9, "Kit Selection");
 
         player.openInventory(inventory);
@@ -102,7 +74,7 @@ public class Kits implements Listener {
         inventory.setItem(8, getGodItem());
     }
 
-    private ItemStack getTravelerIcon() {
+    private static ItemStack getTravelerIcon() {
         ItemStack is = new ItemStack(Material.CHAINMAIL_HELMET);
         ItemMeta im = is.getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();
@@ -113,7 +85,7 @@ public class Kits implements Listener {
         return is;
     }
 
-    private ItemStack getNinjaIcon() {
+    private static ItemStack getNinjaIcon() {
         ItemStack is = new ItemStack(Material.LEATHER_HELMET);
         ItemMeta im = is.getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();
@@ -124,7 +96,7 @@ public class Kits implements Listener {
         return is;
     }
 
-    private ItemStack getSpyIcon() {
+    private static ItemStack getSpyIcon() {
         ItemStack is = new ItemStack(Material.IRON_HELMET);
         ItemMeta im = is.getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();
@@ -135,7 +107,7 @@ public class Kits implements Listener {
         return is;
     }
 
-    private ItemStack getTankIcon() {
+    private static ItemStack getTankIcon() {
         ItemStack is = new ItemStack(Material.GOLD_HELMET);
         ItemMeta im = is.getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();
@@ -146,7 +118,7 @@ public class Kits implements Listener {
         return is;
     }
 
-    private ItemStack getGodItem() {
+    private static ItemStack getGodItem() {
         ItemStack is = new ItemStack(Material.DIAMOND_HELMET);
         ItemMeta im = is.getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();
@@ -157,7 +129,8 @@ public class Kits implements Listener {
         return is;
     }
 
-    @EventHandler
+    @SuppressWarnings("static-access")
+	@EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
@@ -182,7 +155,7 @@ public class Kits implements Listener {
 
             if (event.getItem() == this.getTravelerIcon()) {
                 event.setCancelled(true);
-                Kit.getByName("travler").equip(player);
+                Kit.getByName("traveler").equip(player);
             } else if (event.getItem() == this.getNinjaIcon()) {
                 event.setCancelled(true);
                 Kit.getByName("ninja").equip(player);
@@ -199,7 +172,8 @@ public class Kits implements Listener {
         }
     }
 
-    @EventHandler
+    @SuppressWarnings("static-access")
+	@EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) return;
 
