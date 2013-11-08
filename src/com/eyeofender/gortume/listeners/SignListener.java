@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.eyeofender.gortume.HideAndGo;
 import com.eyeofender.gortume.game.GameManager;
+import com.eyeofender.gortume.items.Kits;
 
 public class SignListener implements Listener {
 
@@ -63,43 +64,4 @@ public class SignListener implements Listener {
             }
         }
     }
-    
-    @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e) {
-     
-    if(e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.SIGN_POST || e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.SIGN || e.getAction() == Action.RIGHT_CLICK_BLOCK && e.getClickedBlock().getType() == Material.WALL_SIGN){
-     
-    	Block block = e.getClickedBlock();
-    	Sign sign = (Sign) block.getState();
-     
-    		if(sign.getLine(0).equalsIgnoreCase(""  + ChatColor.GREEN + ChatColor.BOLD + "[Join]")){
-    			String arena = sign.getLine(1);
-    			
-    			GameManager gm = plugin.getGameManager(arena);
-    			
-    			if(gm != null){
-    				Player player = e.getPlayer();
-    				
-    		        player.getInventory().clear();
-    				player.getInventory().clear();
-    				player.getInventory().setHelmet(null);
-    				player.getInventory().setChestplate(null);
-    				player.getInventory().setLeggings(null);
-    				player.getInventory().setBoots(null);
-    				
-    				player.getInventory().remove(Material.COMPASS);
-    				player.getInventory().remove(Material.WATCH);
-    				player.getInventory().remove(Material.DIAMOND_HELMET);
-
-    				player.getInventory().setContents(player.getInventory().getContents());
-
-    				gm.joinArena(player);
-    			}else{
-    				plugin.sendMessage(e.getPlayer(), "Arena could not be found.");
-    			}
-    		}
-    	
-    	}
-    }
-
 }
