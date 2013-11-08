@@ -1,27 +1,30 @@
 name: Gortume
 main: com.eyeofender.gortume.HideAndGo
 version: 1.3.0
-author: avery246813579
+authors: [avery246813579, LimeByte]
 description: Gortume A simple plugin.
 database: true
 commands:
-  Set:
-    description: Sets gortume points.
-  S:
-    description: Sets gortume points.  
-  Create:
-    description: Creates a arena.
-  Join:
-    description: Sets gortume points.   
-  Countdown:
-    description: Sets gortume points. 
-  C:
-    description: Sets gortume points. 
-  Leave:
-    description: Sets gortume points.                
-  L:
-    description: Sets gortume points.                
-  Pass:
-    description: Sets gortume points.  
-  Enable:
-    description: Discription.                                          
+    Set:
+        description: Sets gortume points.
+    S:
+        description: Sets gortume points.
+    Create:
+        description: Creates a arena.
+    Join:
+        description: Sets gortume points.
+    Countdown:
+        description: Sets gortume points.
+    C:
+        description: Sets gortume points.
+    Leave:
+        description: Sets gortume points.
+    L:
+        description: Sets gortume points.
+    Pass:
+        description: Sets gortume points.
+    Enable:
+        description: Description.
+    Kit:
+        description: Description.
+    

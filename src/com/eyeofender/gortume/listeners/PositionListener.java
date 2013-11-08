@@ -8,6 +8,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.eyeofender.gortume.HideAndGo;
+import com.eyeofender.gortume.game.GameManager;
 
 public class PositionListener implements Listener{
 
@@ -33,6 +34,7 @@ public class PositionListener implements Listener{
 					plugin.sendMessage(player, "Plugin Failed To Create Waypoint!");
 					plugin.sendConsole("Plugin Failed To Create Waypoint!");
 				}
+				
 			}
 			
 			if(event.getAction() == Action.RIGHT_CLICK_BLOCK && player.getItemInHand().getType() == Material.STICK){
@@ -44,6 +46,17 @@ public class PositionListener implements Listener{
 				}catch(Exception e){
 					plugin.sendMessage(player, "Plugin Failed To Create Waypoint!");
 					plugin.sendConsole("Plugin Failed To Create Waypoint!");
+				}
+			}
+		}
+		
+		if(plugin.getInArena().contains(player)){
+			GameManager gm = plugin.getPlayersGame(player);
+			if(gm.getAlive().contains(event.getPlayer())){
+				if(event.getClickedBlock().getType() == Material.EMERALD_BLOCK){
+					gm.addClicked(event.getPlayer());
+					gm.checkPlayersAlive();
+					gm.tellArena(event.getPlayer().getName() + " has clicked the emerald.");
 				}
 			}
 		}

@@ -9,9 +9,10 @@ import org.bukkit.entity.Player;
 
 import com.eyeofender.gortume.HideAndGo;
 
+@SuppressWarnings("unused")
 public class DatabaseManager {
 
-    private HideAndGo plugin;
+   /** private HideAndGo plugin;
 
     public DatabaseManager(HideAndGo plugin) {
         this.plugin = plugin;
@@ -35,6 +36,6 @@ public class DatabaseManager {
         List<Class<?>> list = new ArrayList<Class<?>>();
         list.add(Passes.class);
         return list;
-    }
+    }**/
 
 }
