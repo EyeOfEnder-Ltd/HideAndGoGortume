@@ -29,7 +29,7 @@ public class MenuListener implements Listener {
 
         if (clicked == null || clicked.getType() == Material.AIR) return;
 
-        if (event.getInventory().getTitle() == KitMenu.getTitle()) {
+        if (event.getInventory().getTitle().equals(KitMenu.getTitle())) {
             for (Kit kit : Kit.getKits()) {
                 if (KitMenu.areEqual(clicked, kit.getIcon())) {
                     kit.equip(player);

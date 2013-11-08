@@ -52,11 +52,11 @@ public class Metadata {
 
     private static MetadataValue getValue(Player player, String key) {
         List<MetadataValue> values = player.getMetadata(key);
-        String bnName = plugin.getDescription().getName();
+        String pluginName = plugin.getDescription().getName();
 
         for (MetadataValue value : values) {
             String owner = value.getOwningPlugin().getDescription().getName();
-            if (owner == bnName) return value;
+            if (owner.equals(pluginName)) return value;
         }
 
         return null;

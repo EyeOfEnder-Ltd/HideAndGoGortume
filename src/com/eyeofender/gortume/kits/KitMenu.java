@@ -34,8 +34,8 @@ public class KitMenu {
     }
 
     public static void display(Player player) {
-        Kit[] kits = (Kit[]) Kit.getKits().toArray();
-        Inventory inv = Bukkit.getServer().createInventory(null, (int) (Math.ceil(kits.length / 9) * 9), TITLE);
+        Kit[] kits = Kit.getKits().toArray(new Kit[Kit.getKits().size()]);
+        Inventory inv = Bukkit.getServer().createInventory(null, (int) (Math.ceil(kits.length / 9.0) * 9.0), TITLE);
 
         player.openInventory(inv);
 

@@ -71,7 +71,7 @@ public class ArenaCreator {
 
             Location l = player.getLocation();
 
-            if (l.getWorld().getName() == plugin.getFc().getArena().getConfigurationSection(name).getString("arenaWorld")) {
+            if (l.getWorld().getName().equals(plugin.getFc().getArena().getConfigurationSection(name).getString("arenaWorld"))) {
                 plugin.getFc().getArena().getConfigurationSection(name).set("regularSpawn.x", l.getBlockX());
                 plugin.getFc().getArena().getConfigurationSection(name).set("regularSpawn.y", l.getBlockY());
                 plugin.getFc().getArena().getConfigurationSection(name).set("regularSpawn.z", l.getBlockZ());
@@ -101,7 +101,7 @@ public class ArenaCreator {
 
             Location l = player.getLocation();
 
-            if (l.getWorld().getName() == plugin.getFc().getArena().getConfigurationSection(name).getString("arenaWorld")) {
+            if (l.getWorld().getName().equals(plugin.getFc().getArena().getConfigurationSection(name).getString("arenaWorld"))) {
                 plugin.getFc().getArena().getConfigurationSection(name).set("gortumeSpawn.x", l.getBlockX());
                 plugin.getFc().getArena().getConfigurationSection(name).set("gortumeSpawn.y", l.getBlockY());
                 plugin.getFc().getArena().getConfigurationSection(name).set("gortumeSpawn.z", l.getBlockZ());
@@ -156,7 +156,7 @@ public class ArenaCreator {
 
             if (l != null) {
                 if (l2 != null) {
-                    if (l.getWorld().getName() == plugin.getFc().getArena().getConfigurationSection(name).getString("arenaWorld")) {
+                    if (l.getWorld().getName().equals(plugin.getFc().getArena().getConfigurationSection(name).getString("arenaWorld"))) {
                         plugin.getFc().getArena().getConfigurationSection(name).set("location1.x", l.getBlockX());
                         plugin.getFc().getArena().getConfigurationSection(name).set("location1.y", 0);
                         plugin.getFc().getArena().getConfigurationSection(name).set("location1.z", l.getBlockZ());

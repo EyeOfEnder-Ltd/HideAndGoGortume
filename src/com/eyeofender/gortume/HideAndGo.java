@@ -287,7 +287,7 @@ public class HideAndGo extends JavaPlugin {
                 if (this.getFc().getArena().contains(arena)) {
 
                     for (GameManager gm : this.getActiveArenas()) {
-                        if (gm.getArenaName() == arena) {
+                        if (gm.getArenaName().equals(arena)) {
                             this.sendMessage(player, "Arena already running.");
                             return false;
                         }
