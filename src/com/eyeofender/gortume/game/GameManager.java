@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.eyeofender.gortume.HideAndGo;
-import com.eyeofender.gortume.items.Kits;
+import com.eyeofender.gortume.kits.KitMenu;
 import com.eyeofender.gortume.timers.BatTimer;
 import com.eyeofender.gortume.timers.EndTimer;
 import com.eyeofender.gortume.timers.GameTimer;
@@ -81,14 +81,12 @@ public class GameManager {
 
     private Arena arena;
     private Cuboid cube;
-    private Kits kits;
 
     private Location blockLocation;
 
     public GameManager(HideAndGo plugin, Arena arena) {
         this.plugin = plugin;
         this.arena = arena;
-        kits = new Kits(plugin);
 
         try {
             this.setCube(new Cuboid(arena.getLocation1(), arena.getLocation2()));
@@ -147,9 +145,7 @@ public class GameManager {
         player.teleport(arena.getLobbySpawn());
         arenaPlayers.add(player);
 
-        kits.addPlayer(player);
-
-        player.getInventory().addItem(kits.getKitTool());
+        player.getInventory().addItem(KitMenu.getMenuItem());
 
         /** Updates Players Inventory **/
         player.setGameMode(GameMode.SURVIVAL);
@@ -235,8 +231,6 @@ public class GameManager {
                     player.teleport(arena.getRegularSpawn());
                     player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1000000, 1));
                     plugin.getNoMove().add(player);
-
-                    kits.giveItems();
                 }
             }
 

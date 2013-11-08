@@ -21,6 +21,7 @@ import com.eyeofender.gortume.handlers.FileHandler;
 import com.eyeofender.gortume.kits.Bonus;
 import com.eyeofender.gortume.listeners.BlockListener;
 import com.eyeofender.gortume.listeners.GameListener;
+import com.eyeofender.gortume.listeners.MenuListener;
 import com.eyeofender.gortume.listeners.MovementListener;
 import com.eyeofender.gortume.listeners.PositionListener;
 import com.eyeofender.gortume.listeners.SignListener;
@@ -54,8 +55,6 @@ public class HideAndGo extends JavaPlugin {
     private List<Player> noMove = new ArrayList<Player>();
     private List<Location> emeralds = new ArrayList<Location>();
 
-    private Logger logger = Logger.getLogger("Minecraft");
-
     private FileHandler fc = new FileHandler(this);
     private ArenaCreator ac = new ArenaCreator(this);
     private Permissions perm = new Permissions(this);
@@ -85,6 +84,7 @@ public class HideAndGo extends JavaPlugin {
         configHelper.loadConfig();
         perm.enablePermissions();
 
+        pm.registerEvents(new MenuListener(), this);
         pm.registerEvents(new PositionListener(this), this);
         pm.registerEvents(new MovementListener(this), this);
         pm.registerEvents(new GameListener(this), this);
@@ -132,7 +132,7 @@ public class HideAndGo extends JavaPlugin {
      ****************************************************************************/
 
     public void sendConsole(String Message) {
-        this.logger.info("[Gortume] " + Message);
+        this.getLogger().info("[Gortume] " + Message);
     }
 
     public void sendMessage(Player player, String Message) {
