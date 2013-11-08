@@ -89,15 +89,8 @@ public class Kit {
     }
 
     public void equip(Player player) {
-<<<<<<< HEAD
         if (!player.hasPermission(this.permission)) {
             player.sendMessage(ChatColor.RED + "You do not have permission for kit " + ChatColor.GOLD + this.name + ChatColor.RED + "");
-=======
-    	player.getInventory().clear();
-    	
-        if (!player.hasPermission(this.permission)) {
-            player.sendMessage(ChatColor.RED + "You do not have permission for kit " + ChatColor.GOLD + this.name + ChatColor.RED + ".");
->>>>>>> refs/remotes/origin/master
             return;
         }
 

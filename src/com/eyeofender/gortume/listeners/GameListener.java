@@ -1,9 +1,6 @@
 package com.eyeofender.gortume.listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,7 +8,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -21,15 +17,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-<<<<<<< HEAD
-=======
-import org.bukkit.inventory.ItemStack;
->>>>>>> refs/remotes/origin/master
 
 import com.eyeofender.gortume.HideAndGo;
 import com.eyeofender.gortume.game.GameManager;
-import com.eyeofender.gortume.items.Kits;
-import com.eyeofender.gortume.kits.Kit;
 
 public class GameListener implements Listener {
 
@@ -192,12 +182,14 @@ public class GameListener implements Listener {
                     }
                 }
             }
-	
-	@EventHandler
-	public void onChat(AsyncPlayerChatEvent e) {
-		if(plugin.getCantTalk().contains(e.getPlayer())){
-	        e.setCancelled(true);
-	        plugin.sendChat(e.getPlayer(), "Chatting is disibled while in game.");
-		}
-	}
+        }
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent e) {
+        if (plugin.getCantTalk().contains(e.getPlayer())) {
+            e.setCancelled(true);
+            plugin.sendChat(e.getPlayer(), "Chatting is disibled while in game.");
+        }
+    }
 }

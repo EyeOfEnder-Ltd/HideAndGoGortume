@@ -3,7 +3,7 @@ main: com.eyeofender.gortume.HideAndGo
 version: 1.3.0
 authors: [avery246813579, LimeByte]
 description: Gortume A simple plugin.
-database: true
+database: false
 commands:
     Set:
         description: Sets gortume points.

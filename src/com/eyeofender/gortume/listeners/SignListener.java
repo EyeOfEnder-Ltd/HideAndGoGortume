@@ -1,19 +1,12 @@
 package com.eyeofender.gortume.listeners;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.Sign;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.eyeofender.gortume.HideAndGo;
 import com.eyeofender.gortume.game.GameManager;
-import com.eyeofender.gortume.items.Kits;
 
 public class SignListener implements Listener {
 
@@ -34,12 +27,12 @@ public class SignListener implements Listener {
 
                     if (gm.isInLobby()) {
                         if (gm.getArenaPlayers().size() < plugin.getConfigHelper().getMaxPlayers()) {
-                            event.setLine(0, ""  + ChatColor.GREEN + ChatColor.BOLD + "[Join]");
+                            event.setLine(0, "" + ChatColor.GREEN + ChatColor.BOLD + "[Join]");
                         } else {
-                            event.setLine(0, ""  + ChatColor.RED + ChatColor.BOLD + "[Full]");
+                            event.setLine(0, "" + ChatColor.RED + ChatColor.BOLD + "[Full]");
                         }
                     } else {
-                        event.setLine(0, ""  + ChatColor.RED + ChatColor.BOLD + "[In-Game]");
+                        event.setLine(0, "" + ChatColor.RED + ChatColor.BOLD + "[In-Game]");
                     }
 
                     event.setLine(1, gm.getArenaName());

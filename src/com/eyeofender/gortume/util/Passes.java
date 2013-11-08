@@ -1,9 +1,13 @@
 package com.eyeofender.gortume.util;
 
+import javax.persistence.Id;
+
+import com.avaje.ebean.validation.Length;
+import com.avaje.ebean.validation.NotNull;
 
 public class Passes {
 
-/**    @Id
+    @Id
     @Length(max = 16)
     private String name;
 
@@ -32,6 +36,6 @@ public class Passes {
 
     public void removePass() {
         this.passes--;
-    }**/
+    }
 
 }

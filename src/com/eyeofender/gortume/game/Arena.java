@@ -248,7 +248,8 @@ public class Arena {
             boolean full = gm.getArenaPlayers().size() >= plugin.getConfigHelper().getMaxPlayers();
 
             Sign sign = (Sign) block.getState();
-            sign.setLine(0, gm.isInLobby() ? full ? "" + ChatColor.RED + ChatColor.BOLD + "[Full]" : "" + ChatColor.GREEN + ChatColor.BOLD + "[Join]" : "" + ChatColor.RED + ChatColor.BOLD + "[In-Game]");
+            sign.setLine(0, gm.isInLobby() ? full ? "" + ChatColor.RED + ChatColor.BOLD + "[Full]" : "" + ChatColor.GREEN + ChatColor.BOLD + "[Join]" : "" + ChatColor.RED + ChatColor.BOLD
+                    + "[In-Game]");
             sign.setLine(1, gm.getArenaName());
             sign.setLine(2, ChatColor.GRAY + "" + ChatColor.BOLD + gm.getArenaPlayers().size() + "/" + plugin.getConfigHelper().getMaxPlayers());
             sign.setLine(3, gm.isInLobby() ? "" + ChatColor.GOLD + ChatColor.BOLD + "-=- Lobby -=-" : "" + ChatColor.GRAY + ChatColor.BOLD + "-=- In-Game -=-");

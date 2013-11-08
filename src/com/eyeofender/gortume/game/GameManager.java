@@ -127,14 +127,14 @@ public class GameManager {
     public void addPlayer(Player player) {
         /** Clear Inventory **/
         this.clearInventory(player);
-       
+
         /** Sets time to night **/
         player.getWorld().setTime(12500);
-       
+
         /** Adds player to arrays **/
         plugin.getInArena().add(player);
         arenaPlayers.add(player);
-        
+
         /** Teleports player **/
         this.teleport(player, arena.getLobbySpawn());
 
@@ -146,7 +146,7 @@ public class GameManager {
 
         /** Updates Signs **/
         arena.updateSigns();
-        
+
         /** Adds Kit Tool **/
         player.getInventory().addItem(KitMenu.getMenuItem());
     }
@@ -155,9 +155,9 @@ public class GameManager {
         if (this.getArenaPlayers().size() >= plugin.getConfigHelper().getMinPlayers()) {
             if (this.isLobby == false) {
                 this.setUpGame();
-                
-                for(Player player : this.getArenaPlayers()){
-                        plugin.sendMessage(player, "Minimum players has been reached. Lobby timer has started.");
+
+                for (Player player : this.getArenaPlayers()) {
+                    plugin.sendMessage(player, "Minimum players has been reached. Lobby timer has started.");
                 }
             }
         }
@@ -348,7 +348,7 @@ public class GameManager {
             player.setHealth(20);
             player.setFoodLevel(20);
             player.setLevel(0);
-            
+
             plugin.getCantTalk().remove(player);
             plugin.sendChat(player, "Chat has been enabled.");
         }
@@ -382,8 +382,8 @@ public class GameManager {
         player.setFoodLevel(20);
         player.setLevel(0);
         player.setExp(0);
-        
-        if(plugin.getCantTalk().contains(player)) {
+
+        if (plugin.getCantTalk().contains(player)) {
             plugin.getCantTalk().remove(player);
         }
 
@@ -488,7 +488,7 @@ public class GameManager {
 
         plugin.getEmeralds().remove(this.getArena().getRandomBlock());
         this.getArena().getRandomBlock().getBlock().setType(Material.AIR);
-        
+
         this.gortumePlayer = null;
     }
 
@@ -507,9 +507,9 @@ public class GameManager {
             player.removePotionEffect(effect.getType());
         }
     }
-    
+
     @SuppressWarnings("deprecation")
-    public void clearInventory(Player player){
+    public void clearInventory(Player player) {
         this.clearPotionEffects(player);
         player.getInventory().clear();
         player.getInventory().clear();

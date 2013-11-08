@@ -9,187 +9,188 @@ import com.eyeofender.gortume.game.GameManager;
 
 public class ConfigurationHandler {
 
-	private HideAndGo plugin;
-	
-	/** Match Info **/
-	private int maxPlayers = 16;
-	private int minPlayers = 8;
-	
-	/** Timers **/
-	private int gortumeTimer = 10;
-	private int lobbyTime = 20;
-	private int gameTimer = 600; 
-	private int endTimer = 10;
-	
-	private int batTimer = 30;
-	private int soundTimer = 15;
-	
-	/** MySQL **/
+    private HideAndGo plugin;
+
+    /** Match Info **/
+    private int maxPlayers = 16;
+    private int minPlayers = 8;
+
+    /** Timers **/
+    private int gortumeTimer = 10;
+    private int lobbyTime = 20;
+    private int gameTimer = 600;
+    private int endTimer = 10;
+
+    private int batTimer = 30;
+    private int soundTimer = 15;
+
+    /** MySQL **/
     private String user;
     private String database;
     private String password;
     private String port;
     private String hostname;
-	
-	public ConfigurationHandler(HideAndGo plugin){
-		this.plugin = plugin;
-	}
-	
-	public void loadConfig(){
-		if(plugin.getConfig().contains("maxPlayers")){
-			this.setMaxPlayers(plugin.getConfig().getInt("maxPlayers"));
-		}
-		if(plugin.getConfig().contains("minPlayers")){
-			this.setMinPlayers(plugin.getConfig().getInt("minPlayers"));
-		}
-		if(plugin.getConfig().contains("lobbyTime")){
-			this.setLobbyTime(plugin.getConfig().getInt("lobbyTime"));
-		}
-		if(plugin.getConfig().contains("gortumeTimer")){
-			this.setGortumeTimer(plugin.getConfig().getInt("gortumeTimer"));
-		}
-		if(plugin.getConfig().contains("gameTimer")){
-			this.setGameTimer(plugin.getConfig().getInt("gameTimer"));
-		}
-		if(plugin.getConfig().contains("endTimer")){
-			this.setEndTimer(plugin.getConfig().getInt("endTimer"));
-		}
-		if(plugin.getConfig().contains("batTimer")){
-			this.setBatTimer(plugin.getConfig().getInt("batTimer"));
-		}
-		if(plugin.getConfig().contains("soundTimer")){
-			this.setSoundTimer(plugin.getConfig().getInt("soundTimer"));
-		}
-		if(plugin.getConfig().contains("user")){
-			this.setUser(plugin.getConfig().getString("user"));
-		}
-		if(plugin.getConfig().contains("database")){
-			this.setDatabase(plugin.getConfig().getString("database"));
-		}
-		if(plugin.getConfig().contains("password")){
-			this.setPassword(plugin.getConfig().getString("password"));
-		}
-		if(plugin.getConfig().contains("port")){
-			this.setPort(plugin.getConfig().getString("port"));
-		}
-		if(plugin.getConfig().contains("hostname")){
-			this.setHostname(plugin.getConfig().getString("hostname"));
-		}
-		if(plugin.getConfig().contains("enabled")){
-			List<String> arenas = new ArrayList<String>();
-			arenas = plugin.getConfig().getStringList("enabled");
-			
-			plugin.sendConsole("Arenas enabled:");
-			
-			for(String arena : arenas){
-				Arena arenaa = new Arena(plugin, arena);
-				GameManager gmn = new GameManager(plugin, arenaa);
-				plugin.getActiveArenas().add(gmn);
-				plugin.sendConsole(arena);
-			}
-		}
-	}
 
-	public int getMaxPlayers() {
-		return maxPlayers;
-	}
+    public ConfigurationHandler(HideAndGo plugin) {
+        this.plugin = plugin;
+    }
 
-	public void setMaxPlayers(int maxPlayers) {
-		this.maxPlayers = maxPlayers;
-	}
+    public void loadConfig() {
+        if (plugin.getConfig().contains("maxPlayers")) {
+            this.setMaxPlayers(plugin.getConfig().getInt("maxPlayers"));
+        }
+        if (plugin.getConfig().contains("minPlayers")) {
+            this.setMinPlayers(plugin.getConfig().getInt("minPlayers"));
+        }
+        if (plugin.getConfig().contains("lobbyTime")) {
+            this.setLobbyTime(plugin.getConfig().getInt("lobbyTime"));
+        }
+        if (plugin.getConfig().contains("gortumeTimer")) {
+            this.setGortumeTimer(plugin.getConfig().getInt("gortumeTimer"));
+        }
+        if (plugin.getConfig().contains("gameTimer")) {
+            this.setGameTimer(plugin.getConfig().getInt("gameTimer"));
+        }
+        if (plugin.getConfig().contains("endTimer")) {
+            this.setEndTimer(plugin.getConfig().getInt("endTimer"));
+        }
+        if (plugin.getConfig().contains("batTimer")) {
+            this.setBatTimer(plugin.getConfig().getInt("batTimer"));
+        }
+        if (plugin.getConfig().contains("soundTimer")) {
+            this.setSoundTimer(plugin.getConfig().getInt("soundTimer"));
+        }
+        if (plugin.getConfig().contains("user")) {
+            this.setUser(plugin.getConfig().getString("user"));
+        }
+        if (plugin.getConfig().contains("database")) {
+            this.setDatabase(plugin.getConfig().getString("database"));
+        }
+        if (plugin.getConfig().contains("password")) {
+            this.setPassword(plugin.getConfig().getString("password"));
+        }
+        if (plugin.getConfig().contains("port")) {
+            this.setPort(plugin.getConfig().getString("port"));
+        }
+        if (plugin.getConfig().contains("hostname")) {
+            this.setHostname(plugin.getConfig().getString("hostname"));
+        }
+        if (plugin.getConfig().contains("enabled")) {
+            List<String> arenas = new ArrayList<String>();
+            arenas = plugin.getConfig().getStringList("enabled");
 
-	public int getMinPlayers() {
-		return minPlayers;
-	}
+            plugin.sendConsole("Arenas enabled:");
 
-	public void setMinPlayers(int minPlayers) {
-		this.minPlayers = minPlayers;
-	}
+            for (String arena : arenas) {
+                Arena arenaa = new Arena(plugin, arena);
+                GameManager gmn = new GameManager(plugin, arenaa);
+                plugin.getActiveArenas().add(gmn);
+                plugin.sendConsole(arena);
+            }
+        }
+    }
 
-	public int getLobbyTime() {
-		return lobbyTime;
-	}
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
 
-	public void setLobbyTime(int lobbyTime) {
-		this.lobbyTime = lobbyTime;
-	}
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
 
-	public int getGortumeTimer() {
-		return gortumeTimer;
-	}
+    public int getMinPlayers() {
+        return minPlayers;
+    }
 
-	public void setGortumeTimer(int gortumeTimer) {
-		this.gortumeTimer = gortumeTimer;
-	}
+    public void setMinPlayers(int minPlayers) {
+        this.minPlayers = minPlayers;
+    }
 
-	public int getGameTimer() {
-		return gameTimer;
-	}
+    public int getLobbyTime() {
+        return lobbyTime;
+    }
 
-	public void setGameTimer(int gameTimer) {
-		this.gameTimer = gameTimer;
-	}
+    public void setLobbyTime(int lobbyTime) {
+        this.lobbyTime = lobbyTime;
+    }
 
-	public int getEndTimer() {
-		return endTimer;
-	}
+    public int getGortumeTimer() {
+        return gortumeTimer;
+    }
 
-	public void setEndTimer(int endTimer) {
-		this.endTimer = endTimer;
-	}
+    public void setGortumeTimer(int gortumeTimer) {
+        this.gortumeTimer = gortumeTimer;
+    }
 
-	public int getBatTimer() {
-		return batTimer;
-	}
+    public int getGameTimer() {
+        return gameTimer;
+    }
 
-	public void setBatTimer(int batTimer) {
-		this.batTimer = batTimer;
-	}
+    public void setGameTimer(int gameTimer) {
+        this.gameTimer = gameTimer;
+    }
 
-	public int getSoundTimer() {
-		return soundTimer;
-	}
+    public int getEndTimer() {
+        return endTimer;
+    }
 
-	public void setSoundTimer(int soundTimer) {
-		this.soundTimer = soundTimer;
-	}
+    public void setEndTimer(int endTimer) {
+        this.endTimer = endTimer;
+    }
 
-	public String getUser() {
-		return user;
-	}
+    public int getBatTimer() {
+        return batTimer;
+    }
 
-	public void setUser(String user){
-		this.user = user;
-	}
-	public String getDatabase() {
-		return database;
-	}
+    public void setBatTimer(int batTimer) {
+        this.batTimer = batTimer;
+    }
 
-	public void setDatabase(String database) {
-		this.database = database;
-	}
+    public int getSoundTimer() {
+        return soundTimer;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setSoundTimer(int soundTimer) {
+        this.soundTimer = soundTimer;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getUser() {
+        return user;
+    }
 
-	public String getPort() {
-		return port;
-	}
+    public void setUser(String user) {
+        this.user = user;
+    }
 
-	public void setPort(String port) {
-		this.port = port;
-	}
+    public String getDatabase() {
+        return database;
+    }
 
-	public String getHostname() {
-		return hostname;
-	}
+    public void setDatabase(String database) {
+        this.database = database;
+    }
 
-	public void setHostname(String hostname) {
-		this.hostname = hostname;
-	}
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
 }

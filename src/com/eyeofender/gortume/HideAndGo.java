@@ -93,7 +93,7 @@ public class HideAndGo extends JavaPlugin {
         pm.registerEvents(new BlockListener(this), this);
         pm.registerEvents(new SignListener(this), this);
 
-       // database = new DatabaseManager(this);
+        // database = new DatabaseManager(this);
     }
 
     @Override
@@ -144,15 +144,15 @@ public class HideAndGo extends JavaPlugin {
     public void sendChat(Player player, String Message) {
         player.sendMessage(ChatColor.BLUE + "< " + ChatColor.GOLD + "Chat" + ChatColor.BLUE + " > " + ChatColor.GRAY + Message);
     }
-    
+
     public void sendDeath(Player player, String Message) {
         player.sendMessage(ChatColor.GOLD + "< " + ChatColor.RED + "Death" + ChatColor.GOLD + " > " + ChatColor.GRAY + Message);
     }
-    
+
     public void sendJoin(Player player, String Message) {
         player.sendMessage(ChatColor.GOLD + "< " + ChatColor.GREEN + "Join" + ChatColor.GOLD + " > " + ChatColor.GRAY + Message);
     }
-    
+
     public void sendArgs(Player player) {
         this.sendMessage(player, "Incorrect Amount of Arguments.");
     }
@@ -363,32 +363,32 @@ public class HideAndGo extends JavaPlugin {
                 this.sendArgs(player);
             }
         }
-        
-        if(CommandLabel.equalsIgnoreCase("Kit")){
-        	if(args.length == 0){
-        		this.sendMessage(player, "Usage: /Kit ( Travler | Ninja | Tank | Spy | God ) - Picks a kit.");
-        	}else if(args.length == 1){
-        		String kit = args[0];
-        		
-        		if(this.getInArena().contains(player)){
-        			GameManager gm = this.getPlayersGame(player);
-        			
-        			if(gm.isInLobby()){
-		        		if(kit.equalsIgnoreCase("Travler") || kit.equalsIgnoreCase("Ninja") || kit.equalsIgnoreCase("Tank") || kit.equalsIgnoreCase("Spy") || kit.equalsIgnoreCase("God")){
-		        			Kit.getByName(args[0]).equip(player);
-		        		}else{
-		        			this.sendMessage(player, "Kit not found.");
-		        		}
-        			}else{
-        				this.sendMessage(player, "You have to be in the lobby to pick a kit.");
-        			}
-        		}else{
-        			this.sendMessage(player, "You have to be in a arena to pick a kit.");
-        		}
-        		
-        	}else{
-        		this.sendArgs(player);
-        	}
+
+        if (CommandLabel.equalsIgnoreCase("Kit")) {
+            if (args.length == 0) {
+                this.sendMessage(player, "Usage: /Kit ( Travler | Ninja | Tank | Spy | God ) - Picks a kit.");
+            } else if (args.length == 1) {
+                String kit = args[0];
+
+                if (this.getInArena().contains(player)) {
+                    GameManager gm = this.getPlayersGame(player);
+
+                    if (gm.isInLobby()) {
+                        if (kit.equalsIgnoreCase("Travler") || kit.equalsIgnoreCase("Ninja") || kit.equalsIgnoreCase("Tank") || kit.equalsIgnoreCase("Spy") || kit.equalsIgnoreCase("God")) {
+                            Kit.getByName(args[0]).equip(player);
+                        } else {
+                            this.sendMessage(player, "Kit not found.");
+                        }
+                    } else {
+                        this.sendMessage(player, "You have to be in the lobby to pick a kit.");
+                    }
+                } else {
+                    this.sendMessage(player, "You have to be in a arena to pick a kit.");
+                }
+
+            } else {
+                this.sendArgs(player);
+            }
         }
 
         return false;
@@ -431,17 +431,17 @@ public class HideAndGo extends JavaPlugin {
             return false;
         }
     }
-    
-    public void teleport(Player player, Location l){
-    	double x = l.getBlockX()+.5;
-    	double y = l.getBlockY()+.5;
-    	double z = l.getBlockZ()+.5;
-    	float yaw = l.getYaw();
-    	float pitch = l.getPitch();
-    	
-    	Location tl = new Location(l.getWorld(),x,y,z,yaw,pitch);
-    	
-    	player.teleport(tl);
+
+    public void teleport(Player player, Location l) {
+        double x = l.getBlockX() + .5;
+        double y = l.getBlockY() + .5;
+        double z = l.getBlockZ() + .5;
+        float yaw = l.getYaw();
+        float pitch = l.getPitch();
+
+        Location tl = new Location(l.getWorld(), x, y, z, yaw, pitch);
+
+        player.teleport(tl);
     }
 
     /***************************************************************************
@@ -517,9 +517,9 @@ public class HideAndGo extends JavaPlugin {
         super.installDDL();
     }
 
-    //public List<Class<?>> getDatabaseClasses() {
-       // return DatabaseManager.getDatabaseClasses();
-    //}
+    public List<Class<?>> getDatabaseClasses() {
+        return DatabaseManager.getDatabaseClasses();
+    }
 
     public List<Location> getEmeralds() {
         return emeralds;
@@ -529,11 +529,11 @@ public class HideAndGo extends JavaPlugin {
         this.emeralds = emeralds;
     }
 
-	public List<Player> getCantTalk() {
-		return cantTalk;
-	}
+    public List<Player> getCantTalk() {
+        return cantTalk;
+    }
 
-	public void setCantTalk(List<Player> cantTalk) {
-		this.cantTalk = cantTalk;
-	}
+    public void setCantTalk(List<Player> cantTalk) {
+        this.cantTalk = cantTalk;
+    }
 }
