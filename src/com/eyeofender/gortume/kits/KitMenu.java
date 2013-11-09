@@ -14,6 +14,7 @@ public class KitMenu {
 
     private static final String TITLE = "Kit Selection";
     private static ItemStack menuItem;
+    private static Inventory kitMenu;
 
     static {
         menuItem = new ItemStack(Material.EMERALD, 1);
@@ -23,6 +24,13 @@ public class KitMenu {
         meta.setLore(lore);
         meta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + TITLE);
         menuItem.setItemMeta(meta);
+
+        Kit[] kits = Kit.getKits().toArray(new Kit[Kit.getKits().size()]);
+        kitMenu = Bukkit.getServer().createInventory(null, (int) (Math.ceil(kits.length / 9.0) * 9.0), TITLE);
+
+        for (int i = 0; i < kits.length; i++) {
+            kitMenu.setItem(i, kits[i].getIcon());
+        }
     }
 
     public static String getTitle() {
@@ -34,14 +42,7 @@ public class KitMenu {
     }
 
     public static void display(Player player) {
-        Kit[] kits = Kit.getKits().toArray(new Kit[Kit.getKits().size()]);
-        Inventory inv = Bukkit.getServer().createInventory(null, (int) (Math.ceil(kits.length / 9.0) * 9.0), TITLE);
-
-        player.openInventory(inv);
-
-        for (int i = 0; i < kits.length; i++) {
-            inv.setItem(i, kits[i].getIcon());
-        }
+        player.openInventory(kitMenu);
     }
 
     public static boolean areEqual(ItemStack item1, ItemStack item2) {

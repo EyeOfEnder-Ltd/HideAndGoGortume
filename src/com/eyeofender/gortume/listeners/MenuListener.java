@@ -33,6 +33,7 @@ public class MenuListener implements Listener {
             for (Kit kit : Kit.getKits()) {
                 if (KitMenu.areEqual(clicked, kit.getIcon())) {
                     kit.equip(player);
+                    event.setCancelled(true);
                     return;
                 }
             }
