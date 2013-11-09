@@ -391,6 +391,10 @@ public class HideAndGo extends JavaPlugin {
             }
         }
 
+        if (CommandLabel.equalsIgnoreCase("version")) {
+            this.sendMessage(player, "Running version " + getDescription().getVersion() + ".");
+        }
+
         return false;
 
     }

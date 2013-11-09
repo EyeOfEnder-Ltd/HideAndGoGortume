@@ -1,6 +1,6 @@
 name: Gortume
 main: com.eyeofender.gortume.HideAndGo
-version: 1.3.1
+version: 1.3.2
 authors: [avery246813579, LimeByte]
 description: Gortume A simple plugin.
 database: false
@@ -27,4 +27,5 @@ commands:
         description: Description.
     Kit:
         description: Description.
-    
+    version:
+        description: Gets the running version of Gortume.
