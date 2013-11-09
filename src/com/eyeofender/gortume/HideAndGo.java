@@ -20,6 +20,7 @@ import com.eyeofender.gortume.handlers.ConfigurationHandler;
 import com.eyeofender.gortume.handlers.FileHandler;
 import com.eyeofender.gortume.kits.Bonus;
 import com.eyeofender.gortume.kits.Kit;
+import com.eyeofender.gortume.kits.KitMenu;
 import com.eyeofender.gortume.listeners.BlockListener;
 import com.eyeofender.gortume.listeners.GameListener;
 import com.eyeofender.gortume.listeners.MenuListener;
@@ -81,6 +82,8 @@ public class HideAndGo extends JavaPlugin {
 
         Metadata.init(this);
         Bonus.init(this);
+        Kit.init();
+        KitMenu.init();
 
         fc.configSave();
         configHelper.loadConfig();

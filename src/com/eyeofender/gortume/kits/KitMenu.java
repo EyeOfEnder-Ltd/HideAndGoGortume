@@ -16,7 +16,10 @@ public class KitMenu {
     private static ItemStack menuItem;
     private static Inventory kitMenu;
 
-    static {
+    private KitMenu() {
+    }
+
+    public static void init() {
         menuItem = new ItemStack(Material.EMERALD, 1);
         ItemMeta meta = menuItem.getItemMeta();
         ArrayList<String> lore = new ArrayList<String>();

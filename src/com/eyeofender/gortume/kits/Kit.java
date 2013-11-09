@@ -31,7 +31,24 @@ public class Kit {
     private List<PotionEffect> effects;
     private double maxHealth;
 
-    static {
+    public Kit(String name) {
+        this.name = name;
+
+        String perm = "gortume.kit." + name.toLowerCase();
+        permission = new Permission(perm, "Permission for the kit: " + name + ".", PermissionDefault.TRUE);
+        try {
+            Bukkit.getServer().getPluginManager().addPermission(permission);
+        } catch (Exception e) {
+        }
+
+        this.items = Lists.newArrayList();
+        this.effects = Lists.newArrayList();
+        this.maxHealth = 20;
+
+        byName.put(name.toLowerCase(), this);
+    }
+
+    public static void init() {
         Kit kit = new Kit("Travler");
         kit.setIcon(Material.CHAINMAIL_HELMET);
         kit.addItems(Bonus.speedCarrot.getItem());
@@ -57,23 +74,6 @@ public class Kit {
         kit.addItems(Bonus.speedCarrot.getItem(), Bonus.invisiblePie.getItem(), Bonus.sightPork.getItem(), Bonus.slownessSteak.getItem(), Bonus.confusionCookie.getItem(), Bonus.goldenApple.getItem(),
                 Bonus.knockbackStick.getItem());
         kit.save();
-    }
-
-    public Kit(String name) {
-        this.name = name;
-
-        String perm = "gortume.kit." + name.toLowerCase();
-        permission = new Permission(perm, "Permission for the kit: " + name + ".", PermissionDefault.TRUE);
-        try {
-            Bukkit.getServer().getPluginManager().addPermission(permission);
-        } catch (Exception e) {
-        }
-
-        this.items = Lists.newArrayList();
-        this.effects = Lists.newArrayList();
-        this.maxHealth = 20;
-
-        byName.put(name.toLowerCase(), this);
     }
 
     public void save() {
