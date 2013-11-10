@@ -139,7 +139,9 @@ public class GameManager {
         this.teleport(player, arena.getLobbySpawn());
 
         /** Tells arena of player join **/
-        plugin.sendJoin(player, ChatColor.AQUA + player.getName() + ChatColor.BLUE + " has joined the arena. (" + arenaPlayers.size() + "/" + plugin.getConfigHelper().getMaxPlayers() + ")");
+        for (Player players : this.getArenaPlayers()) {
+            plugin.sendJoin(players, ChatColor.AQUA + player.getName() + ChatColor.BLUE + " has joined the arena. (" + arenaPlayers.size() + "/" + plugin.getConfigHelper().getMaxPlayers() + ")");
+        }
 
         /** Checks players in arena **/
         checkPlayerAmount();
@@ -169,7 +171,7 @@ public class GameManager {
     }
 
     public void startGame() {
-        if (this.getArenaPlayers().size() != 0) {
+        if (this.getArenaPlayers().size() != 1) {
             if (this.getGortumePlayers().size() != 0) {
                 if (this.getGortumePlayers().size() != 1) {
                     int number = new Random().nextInt(this.getGortumePlayers().size()) + 0;
@@ -177,13 +179,11 @@ public class GameManager {
 
                     this.setGortumePlayer(player);
 
-                    this.tellArena(player.getName() + " is the gortume!");
                 } else {
                     Player player = this.gortumePlayers.get(0);
 
                     this.setGortumePlayer(player);
 
-                    this.tellArena(player.getName() + " is the gortume!");
                 }
             } else {
                 Random generator = new Random();
@@ -192,7 +192,6 @@ public class GameManager {
 
                 this.setGortumePlayer(player);
 
-                this.tellArena(player.getName() + " is the gortume!");
             }
 
             this.teleport(this.getGortumePlayer(), arena.getGortumeSpawn());
@@ -207,37 +206,74 @@ public class GameManager {
             emerald.setItemMeta(im);
 
             for (Player player : this.getArenaPlayers()) {
-                /** Clears players inventory **/
-                this.clearInventory(player);
 
                 /** Makes is so every player can not talk **/
                 plugin.getCantTalk().add(player);
-
-                /** Tells everyone they can not talk **/
-                plugin.sendChat(player, "Chatting has been disabled.");
 
                 if (player != this.getGortumePlayer()) {
                     this.teleport(player, arena.getRegularSpawn());
                     player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 1000000, 1));
                     plugin.getNoMove().add(player);
                     alive.add(player);
+
+                    for (Player players : this.getAlive()) {
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        player.sendMessage("");
+                        players.sendMessage(ChatColor.GOLD + "-=- -=-=- -=-=-=- -=-=-=-=- -=-=-=- -=-=- -=-");
+                        players.sendMessage("");
+                        plugin.sendMessage(players, ChatColor.BLUE + this.getGortumePlayer().getName() + ChatColor.GRAY + " is the gortume.");
+                        players.sendMessage("");
+                        plugin.sendChat(players, "Chat has been disabled.");
+                        players.sendMessage("");
+                        plugin.sendObject(players, "Wait for the gortume to place the emerald. Then find it.");
+                        players.sendMessage("");
+                        players.sendMessage(ChatColor.GOLD + "-=- -=-=- -=-=-=- -=-=-=-=- -=-=-=- -=-=- -=-");
+                    }
+
                 } else {
+                    /** Clears players inventory **/
+                    this.clearInventory(player);
+
+                    player.sendMessage("");
+                    player.sendMessage("");
+                    player.sendMessage("");
+                    player.sendMessage("");
+                    player.sendMessage("");
+                    player.sendMessage("");
+                    player.sendMessage("");
+                    player.sendMessage("");
+                    player.sendMessage("");
+                    player.sendMessage("");
                     this.getGortumePlayer().getInventory().addItem(emerald);
+                    this.getGortumePlayer().sendMessage(ChatColor.GOLD + "-=- -=-=- -=-=-=- -=-=-=-=- -=-=-=- -=-=- -=-");
+                    this.getGortumePlayer().sendMessage("");
+                    plugin.sendMessage(this.getGortumePlayer(), ChatColor.BLUE + this.getGortumePlayer().getName() + ChatColor.GRAY + " is the gortume.");
+                    this.getGortumePlayer().sendMessage("");
+                    plugin.sendChat(this.getGortumePlayer(), "Chat has been disabled.");
+                    this.getGortumePlayer().sendMessage("");
+                    plugin.sendObject(this.getGortumePlayer(), "Place the emerald block. Kill all the Adventurers.");
+                    this.getGortumePlayer().sendMessage("");
+                    this.getGortumePlayer().sendMessage(ChatColor.GOLD + "-=- -=-=- -=-=-=- -=-=-=-=- -=-=-=- -=-=- -=-");
                 }
             }
 
             this.setGortume(true);
-            alive.remove(this.getGortumePlayer());
-
             gortume = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new GortumeTimer(plugin, this), 20L, 20L);
             this.setInLobby(false);
 
-            plugin.sendMessage(this.getGortumePlayer(), "Place the Emerald Block somewhere that the seekers will not find.");
-            tellArena("Gortume is placing Emerald. Please wait 30 Seconds.");
         } else {
             this.tellArena("Not enough players to start");
             this.stopArena();
         }
+
         arena.updateSigns();
     }
 
@@ -293,6 +329,8 @@ public class GameManager {
         this.game = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new GameTimer(plugin, this), 20L, 20L);
         this.bat = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new BatTimer(plugin, this), 20L, 20L);
         this.sound = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new SoundTimer(plugin, this), 20L, 20L);
+
+        this.getBlockLocation().getBlock().setType(Material.EMERALD_BLOCK);
     }
 
     public void addSpectator(Player player) {
@@ -300,6 +338,7 @@ public class GameManager {
         this.getSpec().add(player);
         this.clearPotionEffects(player);
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 5));
+        this.teleport(player, arena.getRegularSpawn());
         plugin.sendMessage(player, "You have become a spectator.");
         player.setAllowFlight(true);
         player.setFlySpeed(0.1F);
@@ -366,6 +405,10 @@ public class GameManager {
     }
 
     public void leaveArena(Player player) {
+        for (Player players : this.getArenaPlayers()) {
+            plugin.sendMessage(players, ChatColor.BLUE + player.getName() + ChatColor.GRAY + " has left the arena.");
+        }
+
         arena.updateSigns();
 
         this.teleport(player, arena.getEndLocation());
@@ -382,80 +425,43 @@ public class GameManager {
         player.setFoodLevel(20);
         player.setLevel(0);
         player.setExp(0);
-
         if (plugin.getCantTalk().contains(player)) {
             plugin.getCantTalk().remove(player);
         }
 
         if (this.getArenaPlayers().size() <= 1) {
+            this.getArena().getRandomBlock().getBlock().setType(Material.AIR);
             this.stopArena();
-            return;
         }
 
         if (this.getGortumePlayer() == player) {
-            this.tellArena("The gortume has left the arena. A new gortume will be picked.");
-
-            this.gortumePlayer = null;
-
-            if (this.getArenaPlayers().size() != 0) {
-                for (Player playerr : this.getArenaPlayers()) {
-                    this.leaveArena(playerr);
-                    this.addPlayer(playerr);
-                    this.setUpGame();
-                    return;
-                }
-            } else {
-                this.stopArena();
-            }
+            this.stopArena();
         }
     }
 
     public void stopArena() {
+        if (this.getArenaPlayers().size() >= 0) {
 
-        for (Player player : this.getArenaPlayers()) {
-            this.teleport(player, arena.getEndLocation());
-            plugin.getInArena().remove(player);
-            plugin.getNoMove().remove(player);
-            this.clearPotionEffects(player);
-            player.getInventory().clear();
-            player.setHealth(20);
-            player.setFoodLevel(20);
-            player.setLevel(0);
-            player.setExp(0);
+            for (Player player : this.getArenaPlayers()) {
+                plugin.sendMessage(player, "Arena has been stopped.");
+                this.teleport(player, arena.getEndLocation());
+                this.alive.remove(player);
+                this.getSpec().remove(player);
+                this.getGortumePlayers().remove(player);
+                plugin.getInArena().remove(player);
+                plugin.getNoMove().remove(player);
+                plugin.getCantTalk().remove(player);
+                this.clearPotionEffects(player);
+                player.getInventory().clear();
+                player.setHealth(20);
+                player.setFoodLevel(20);
+                player.setLevel(0);
+                player.setExp(0);
+            }
+
+            this.getArenaPlayers().clear();
+
         }
-
-        getArenaPlayers().clear();
-
-        if (this.getGortumePlayer() != null) {
-            this.teleport(getGortumePlayer(), arena.getEndLocation());
-            plugin.getInArena().remove(getGortumePlayer());
-            plugin.getNoMove().remove(getGortumePlayer());
-            this.clearPotionEffects(getGortumePlayer());
-            getGortumePlayer().getInventory().clear();
-            getGortumePlayer().setHealth(20);
-            getGortumePlayer().setFoodLevel(20);
-            getGortumePlayer().setLevel(0);
-            getGortumePlayer().setExp(0);
-        }
-
-        setGortumePlayer(null);
-
-        for (Player player : this.getSpec()) {
-            this.teleport(player, arena.getEndLocation());
-            plugin.getInArena().remove(player);
-            plugin.getNoMove().remove(player);
-            this.clearPotionEffects(player);
-            player.getInventory().clear();
-            player.setHealth(20);
-            player.setFoodLevel(20);
-            player.setLevel(0);
-            player.setExp(0);
-        }
-
-        getSpec().clear();
-
-        getGortumePlayers().clear();
-        getAlive().clear();
 
         plugin.getServer().getScheduler().cancelTask(this.getLobby());
         plugin.getServer().getScheduler().cancelTask(this.getGortume());
@@ -473,9 +479,15 @@ public class GameManager {
 
         this.inLobby = true;
         arena.updateSigns();
+        this.getSpec().clear();
+        this.getArenaPlayers().clear();
+        this.getGortumePlayers().clear();
+        this.getAlive().clear();
 
         plugin.getEmeralds().remove(this.getArena().getRandomBlock());
         this.getArena().getRandomBlock().getBlock().setType(Material.AIR);
+
+        this.gortumePlayer = null;
     }
 
     public void tellArena(String Message) {
@@ -484,8 +496,16 @@ public class GameManager {
         }
     }
 
+    /***************************************************************************
+     * \
+     * 
+     * Helper Methods
+     * 
+     * /
+     ****************************************************************************/
+
     public void teleport(Player p, Location loc) {
-        p.teleport(loc.clone().add(0.5D, 1.0D, 0.5D));
+        p.teleport(loc.clone().add(0.5D, 0.5D, 0.5D));
     }
 
     public void clearPotionEffects(Player player) {
@@ -497,6 +517,7 @@ public class GameManager {
     @SuppressWarnings("deprecation")
     public void clearInventory(Player player) {
         this.clearPotionEffects(player);
+
         player.getInventory().clear();
         player.getInventory().clear();
         player.getInventory().setHelmet(new ItemStack(Material.AIR));

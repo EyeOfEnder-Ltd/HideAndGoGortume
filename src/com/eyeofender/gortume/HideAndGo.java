@@ -37,6 +37,7 @@ public class HideAndGo extends JavaPlugin {
     private static final String CHAT_PREFIX = ChatColor.GOLD + "<" + ChatColor.GOLD + "Chat" + ChatColor.GOLD + "> ";
     private static final String DEATH_PREFIX = ChatColor.GOLD + "<" + ChatColor.RED + "Death" + ChatColor.GOLD + "> ";
     private static final String JOIN_PREFIX = ChatColor.GOLD + "<" + ChatColor.GREEN + "Join" + ChatColor.GOLD + "> ";
+    private static final String OBJECT_PREFIX = ChatColor.GOLD + "<" + ChatColor.YELLOW + "Join" + ChatColor.GOLD + "> ";
 
     private Logger log;
     private List<GameManager> activeArenas = new ArrayList<GameManager>();
@@ -100,12 +101,9 @@ public class HideAndGo extends JavaPlugin {
             l.getBlock().setType(Material.AIR);
         }
 
-        // if (api != null) {
         for (GameManager gm : this.getActiveArenas()) {
-
             gm.stopArena();
         }
-        // }
 
         log.info("Successfully disabled.");
         perm.disablePermissions();
@@ -148,6 +146,10 @@ public class HideAndGo extends JavaPlugin {
 
     public void sendJoin(Player player, String Message) {
         player.sendMessage(JOIN_PREFIX + ChatColor.GRAY + Message);
+    }
+
+    public void sendObject(Player player, String Message) {
+        player.sendMessage(OBJECT_PREFIX + ChatColor.GRAY + Message);
     }
 
     public void sendArgs(Player player) {
