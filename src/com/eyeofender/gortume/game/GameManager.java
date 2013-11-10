@@ -151,6 +151,7 @@ public class GameManager {
 
         /** Adds Kit Tool **/
         player.getInventory().addItem(KitMenu.getMenuItem());
+        KitMenu.display(player);
     }
 
     public void checkPlayerAmount() {

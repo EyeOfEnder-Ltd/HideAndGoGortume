@@ -1,6 +1,6 @@
 name: Gortume
 main: com.eyeofender.gortume.HideAndGo
-version: 1.4.3
+version: 1.4.4
 authors: [avery246813579, LimeByte]
 description: Gortume minigame for TheMass.
 database: true
