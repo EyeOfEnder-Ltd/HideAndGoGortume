@@ -63,6 +63,33 @@ public class GameListener implements Listener {
                     } else {
                         plugin.sendMessage(event.getPlayer(), "Arena could not be found.");
                     }
+                }else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GREEN + ChatColor.BOLD + "[Pass]")){
+                    Player player = event.getPlayer();
+                    
+                	if(plugin.getInArena().contains(player)){
+                		player.performCommand("pass");
+                	}else{
+                		plugin.sendMessage(player, "You have to be in a arena to use this.");
+                	}
+                }else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GREEN + ChatColor.BOLD + "[Kit]")){
+                    Player player = event.getPlayer();
+                    
+                	if(plugin.getInArena().contains(player)){
+                		if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "God")){
+                			player.performCommand("kit god");
+                		}else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Spy")){
+                			player.performCommand("kit spy");
+                		}
+                		else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Tank")){
+                			player.performCommand("kit Tank");
+                		}else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Ninja")){
+                			player.performCommand("kit Ninja");
+                		}else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Travler")){
+                			player.performCommand("kit Travler");
+                		}
+                	}else{
+                		plugin.sendMessage(player, "You have to be in a arena to use select a kit.");
+                	}
                 }
             }
         }
@@ -230,6 +257,54 @@ public class GameListener implements Listener {
         if (plugin.getCantTalk().contains(e.getPlayer())) {
             e.setCancelled(true);
             plugin.sendChat(e.getPlayer(), "Chatting is disibled while in game.");
+            return;
+        }
+        
+        e.setCancelled(true);
+        Player player = e.getPlayer();
+        for(Player players : plugin.getServer().getOnlinePlayers()){
+        	if(plugin.getInArena().contains(players)){
+        		if(plugin.getInArena().contains(player)){
+
+        			GameManager p1 = plugin.getPlayersGame(players);
+        			GameManager p2 = plugin.getPlayersGame(player);
+        			
+        			
+        			if(p1 == p2){
+        				
+        				if(p1.isInLobby()){
+        					
+        					if(plugin.getRh().getDevelopers().contains(player.getName())){
+                    			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.YELLOW , "[Dev] ", ChatColor.RED, ChatColor.BLUE);
+                			}else if(plugin.getRh().getOwners().contains(player.getName())){
+                    			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.YELLOW , "[Owner] ", ChatColor.YELLOW, ChatColor.AQUA);
+                			}else if(plugin.getRh().getMods().contains(player.getName())){
+                    			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.WHITE , "[Mod] ", ChatColor.RED, ChatColor.GOLD);
+                			}
+                			else{
+                				plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.WHITE , "", ChatColor.WHITE, ChatColor.WHITE);
+                			}
+        					
+        				}
+        				
+        			}
+        			
+        		}
+        	}else{
+        		if(!plugin.getInArena().contains(player)){
+        			
+        			if(plugin.getRh().getDevelopers().contains(player.getName())){
+            			plugin.sendChatMessage(players, "Lobby", e.getMessage(),player.getName() , ChatColor.YELLOW , "[Dev] ", ChatColor.RED, ChatColor.BLUE);
+        			}else if(plugin.getRh().getOwners().contains(player.getName())){
+            			plugin.sendChatMessage(players, "Lobby", e.getMessage(),player.getName() , ChatColor.YELLOW , "[Owner] ", ChatColor.YELLOW, ChatColor.AQUA);
+        			}else if(plugin.getRh().getMods().contains(player.getName())){
+            			plugin.sendChatMessage(players, "Lobby", e.getMessage(),player.getName() , ChatColor.WHITE , "[Mod] ", ChatColor.RED, ChatColor.GOLD);
+        			}
+        			else{
+        				plugin.sendChatMessage(players, "Lobby", e.getMessage(),player.getName() , ChatColor.WHITE , "", ChatColor.WHITE, ChatColor.WHITE);
+        			}
+        		}
+        	}
         }
     }
 }

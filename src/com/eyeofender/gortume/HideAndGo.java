@@ -19,6 +19,7 @@ import com.eyeofender.gortume.game.ArenaCreator;
 import com.eyeofender.gortume.game.GameManager;
 import com.eyeofender.gortume.handlers.ConfigurationHandler;
 import com.eyeofender.gortume.handlers.FileHandler;
+import com.eyeofender.gortume.handlers.RankHandler;
 import com.eyeofender.gortume.kits.Bonus;
 import com.eyeofender.gortume.kits.Kit;
 import com.eyeofender.gortume.kits.KitMenu;
@@ -39,13 +40,23 @@ public class HideAndGo extends JavaPlugin {
     private static final String CHAT_PREFIX = ChatColor.GOLD + "<" + ChatColor.GOLD + "Chat" + ChatColor.GOLD + "> ";
     private static final String DEATH_PREFIX = ChatColor.GOLD + "<" + ChatColor.RED + "Death" + ChatColor.GOLD + "> ";
     private static final String JOIN_PREFIX = ChatColor.GOLD + "<" + ChatColor.GREEN + "Join" + ChatColor.GOLD + "> ";
+    private static final String LEAVE_PREFIX = ChatColor.GOLD + "<" + ChatColor.RED + "Leave" + ChatColor.GOLD + "> ";
     private static final String OBJECT_PREFIX = ChatColor.GOLD + "<" + ChatColor.YELLOW + "Join" + ChatColor.GOLD + "> ";
 
     private Logger log;
     private List<GameManager> activeArenas = new ArrayList<GameManager>();
     private DatabaseManager database;
+    private RankHandler rh = new RankHandler(this);
 
-    public List<GameManager> getActiveArenas() {
+    public RankHandler getRh() {
+		return rh;
+	}
+
+	public void setRh(RankHandler rh) {
+		this.rh = rh;
+	}
+
+	public List<GameManager> getActiveArenas() {
         return activeArenas;
     }
 
@@ -81,6 +92,7 @@ public class HideAndGo extends JavaPlugin {
         Bonus.init(this);
         Kit.init();
         KitMenu.init();
+        rh.init();
 
         fc.configSave();
         configHelper.loadConfig();
@@ -149,9 +161,17 @@ public class HideAndGo extends JavaPlugin {
     public void sendJoin(Player player, String Message) {
         player.sendMessage(JOIN_PREFIX + ChatColor.GRAY + Message);
     }
+    
+    public void sendLeave(Player player, String Message){
+    	player.sendMessage(LEAVE_PREFIX + ChatColor.GRAY + Message);
+    }
 
     public void sendObject(Player player, String Message) {
         player.sendMessage(OBJECT_PREFIX + ChatColor.GRAY + Message);
+    }
+    
+    public void sendChatMessage(Player player, String Prefix , String Message, String Sender, ChatColor color, String rank, ChatColor rankColor, ChatColor nameColor){
+    	player.sendMessage(ChatColor.GOLD + "< " + ChatColor.BLUE +  "" + Prefix + "" + ChatColor.GOLD + " > " + rankColor + rank + nameColor + "<" + Sender + ">" + " " +  color + Message);
     }
 
     public void sendArgs(Player player) {
@@ -288,10 +308,14 @@ public class HideAndGo extends JavaPlugin {
             if (gm != null) {
                 Passes passes = database.getPasses(player);
                 if (passes.hasPass()) {
-                    gm.getGortumePlayers().add(player);
-                    passes.removePass();
-                    database.savePasses(passes);
-                    gm.tellArena(player.getName() + " has used there Gortume Pass and now entered the Gortume drawing.");
+                	if(!gm.getGortumePlayers().contains(player)){
+	                    gm.getGortumePlayers().add(player);
+	                    passes.removePass();
+	                    database.savePasses(passes);
+	                    gm.tellArena(player.getName() + " has used there Gortume Pass and now entered the Gortume drawing.");
+                	}else{
+                		sendMessage(player, "You have already used a Gortume Pass.");
+                	}
                 } else {
                     sendMessage(player, ChatColor.RED + "You do not have any passes.");
                 }
