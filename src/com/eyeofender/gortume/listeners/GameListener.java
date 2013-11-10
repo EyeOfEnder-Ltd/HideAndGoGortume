@@ -1,6 +1,9 @@
 package com.eyeofender.gortume.listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,14 +34,34 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getClickedBlock() == null) return;
+        Block block = event.getClickedBlock();
+
         if (plugin.getInArena().contains(event.getPlayer())) {
             GameManager gm = plugin.getPlayersGame(event.getPlayer());
+
             if (gm.getAlive().contains(event.getPlayer())) {
-                if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-                    if (event.getClickedBlock().getType() == Material.EMERALD_BLOCK) {
-                        gm.addClicked(event.getPlayer());
-                        gm.checkPlayersAlive();
-                        gm.tellArena(event.getPlayer().getName() + " has clicked the emerald.");
+                if (block.getType() == Material.EMERALD_BLOCK) {
+                    gm.addClicked(event.getPlayer());
+                    gm.checkPlayersAlive();
+                    gm.tellArena(event.getPlayer().getName() + " has clicked the emerald.");
+                }
+            }
+        }
+
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (block.getState() instanceof Sign) {
+                Sign sign = (Sign) block.getState();
+                if (sign.getLine(0).equalsIgnoreCase("" + ChatColor.GREEN + ChatColor.BOLD + "[Join]")) {
+                    String arena = sign.getLine(1);
+
+                    GameManager gm = plugin.getGameManager(arena);
+
+                    if (gm != null) {
+                        Player player = event.getPlayer();
+                        gm.joinArena(player);
+                    } else {
+                        plugin.sendMessage(event.getPlayer(), "Arena could not be found.");
                     }
                 }
             }
