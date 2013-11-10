@@ -95,9 +95,7 @@ public class GameListener implements Listener {
 
         if (plugin.getInArena().contains(player)) {
             GameManager gm = plugin.getPlayersGame(player);
-            if (gm.getGortumePlayer() != player && !gm.getSpec().contains(player)) {
-                event.setRespawnLocation(gm.getArena().getRegularSpawn());
-            }
+            event.setRespawnLocation(gm.getArena().getGortumeSpawn());
         }
     }
 
@@ -105,8 +103,27 @@ public class GameListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity().getPlayer();
         if (plugin.getInArena().contains(player)) {
+            event.getDrops().clear();
+
             GameManager gm = plugin.getPlayersGame(player);
-            gm.tellArena("The gortume has killed " + player.getName() + ".");
+
+            for (Player players : gm.getArenaPlayers()) {
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage("");
+                players.sendMessage(ChatColor.GOLD + "-=- -=-=- -=-=-=- -=-=-=-=- -=-=-=- -=-=- -=-");
+                players.sendMessage("");
+                plugin.sendDeath(players, "The Gortume has killed " + ChatColor.BLUE + player.getName() + ChatColor.GRAY + ".");
+                players.sendMessage("");
+                players.sendMessage(ChatColor.GOLD + "-=- -=-=- -=-=-=- -=-=-=-=- -=-=-=- -=-=- -=-");
+            }
             gm.addSpectator(player);
             gm.checkPlayersAlive();
         }
