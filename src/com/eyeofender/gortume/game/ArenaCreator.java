@@ -1,5 +1,6 @@
 package com.eyeofender.gortume.game;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -16,14 +17,14 @@ public class ArenaCreator {
     public void createArena(Player player, String upperCaseName) {
         String name = upperCaseName.toLowerCase();
         if (plugin.getFc().getArena().contains(name)) {
-            plugin.sendMessage(player, "Arena is already created.");
+            plugin.sendMessage(player, ChatColor.RED + "Arena already exists.");
             return;
         }
 
         plugin.getFc().getArena().createSection(name);
         plugin.getFc().getArena().getConfigurationSection(name).set("Disabled", false);
         plugin.getFc().saveArena();
-        plugin.sendMessage(player, "Created arena " + name + ". Do /G Set Lobby to set the lobby spawn.");
+        plugin.sendMessage(player, ChatColor.GREEN + "Created arena " + name + ". Use the '/set' command to set waypoints.");
     }
 
     public void setLobby(Player player, String upperCaseName) {

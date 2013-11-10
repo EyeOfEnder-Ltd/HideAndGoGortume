@@ -35,6 +35,7 @@ public class MenuListener implements Listener {
             for (Kit kit : Kit.getKits()) {
                 if (clicked.isSimilar(kit.getIcon())) {
                     kit.equip(player);
+                    player.closeInventory();
                     event.setCancelled(true);
                     return;
                 }
