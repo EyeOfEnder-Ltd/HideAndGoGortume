@@ -399,11 +399,6 @@ public class GameManager {
         this.getBlockLocation().getBlock().setType(Material.AIR);
     }
 
-    public void useGortumePass(Player player) {
-        this.gortumePlayers.add(player);
-        this.tellArena(player.getName() + " has used there Gortume Pass and now entered the Gortume drawing.");
-    }
-
     public void leaveArena(Player player) {
         for (Player players : this.getArenaPlayers()) {
             plugin.sendMessage(players, ChatColor.BLUE + player.getName() + ChatColor.GRAY + " has left the arena.");

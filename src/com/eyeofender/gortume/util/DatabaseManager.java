@@ -24,7 +24,15 @@ public class DatabaseManager {
     }
 
     public Passes getPasses(Player player) {
-        return plugin.getDatabase().find(Passes.class).where().ieq("name", player.getName()).findUnique();
+        Passes passes = plugin.getDatabase().find(Passes.class).where().ieq("name", player.getName()).findUnique();
+
+        if (passes == null) {
+            passes = new Passes();
+            passes.setName(player.getName());
+            plugin.getDatabase().save(passes);
+        }
+
+        return passes;
     }
 
     public void savePasses(Passes passes) {

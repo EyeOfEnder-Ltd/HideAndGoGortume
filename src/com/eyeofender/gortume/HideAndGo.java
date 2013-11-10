@@ -29,6 +29,7 @@ import com.eyeofender.gortume.listeners.PositionListener;
 import com.eyeofender.gortume.listeners.SignListener;
 import com.eyeofender.gortume.util.DatabaseManager;
 import com.eyeofender.gortume.util.Metadata;
+import com.eyeofender.gortume.util.Passes;
 import com.eyeofender.gortume.util.Permissions;
 
 public class HideAndGo extends JavaPlugin {
@@ -91,7 +92,7 @@ public class HideAndGo extends JavaPlugin {
         pm.registerEvents(new BlockListener(this), this);
         pm.registerEvents(new SignListener(this), this);
 
-        // database = new DatabaseManager(this);
+        database = new DatabaseManager(this);
     }
 
     @Override
@@ -284,7 +285,15 @@ public class HideAndGo extends JavaPlugin {
             GameManager gm = this.getPlayersGame(player);
 
             if (gm != null) {
-                gm.useGortumePass(player);
+                Passes passes = database.getPasses(player);
+                if (passes.getPasses() > 0) {
+                    gm.getGortumePlayers().add(player);
+                    passes.removePass();
+                    database.savePasses(passes);
+                    gm.tellArena(player.getName() + " has used there Gortume Pass and now entered the Gortume drawing.");
+                } else {
+                    sendMessage(player, ChatColor.RED + "You do not have any passes.");
+                }
             } else {
                 this.sendMessage(player, ChatColor.RED + "You have to be in a arena to do this.");
             }

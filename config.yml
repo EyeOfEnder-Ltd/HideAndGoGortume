@@ -4,9 +4,4 @@ gortumeTimer: 30
 lobbyTime: 90
 gameTimer: 600
 batTimer: 30
-user: MYSQL
-database: MYSQL
-password: MYSQL
-port: MYSQL
-hostname: MYSQL
 enabled:

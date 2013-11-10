@@ -3,7 +3,7 @@ main: com.eyeofender.gortume.HideAndGo
 version: 1.4.0
 authors: [avery246813579, LimeByte]
 description: Gortume minigame for TheMass.
-database: false
+database: true
 commands:
     set:
         description: Sets a Gortume waypoint to your location.

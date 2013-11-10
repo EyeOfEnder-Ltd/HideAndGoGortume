@@ -60,21 +60,6 @@ public class ConfigurationHandler {
         if (plugin.getConfig().contains("soundTimer")) {
             this.setSoundTimer(plugin.getConfig().getInt("soundTimer"));
         }
-        if (plugin.getConfig().contains("user")) {
-            this.setUser(plugin.getConfig().getString("user"));
-        }
-        if (plugin.getConfig().contains("database")) {
-            this.setDatabase(plugin.getConfig().getString("database"));
-        }
-        if (plugin.getConfig().contains("password")) {
-            this.setPassword(plugin.getConfig().getString("password"));
-        }
-        if (plugin.getConfig().contains("port")) {
-            this.setPort(plugin.getConfig().getString("port"));
-        }
-        if (plugin.getConfig().contains("hostname")) {
-            this.setHostname(plugin.getConfig().getString("hostname"));
-        }
         if (plugin.getConfig().contains("enabled")) {
             List<String> arenas = new ArrayList<String>();
             arenas = plugin.getConfig().getStringList("enabled");
