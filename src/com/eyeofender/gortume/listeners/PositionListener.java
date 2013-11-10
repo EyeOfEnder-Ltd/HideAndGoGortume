@@ -32,7 +32,7 @@ public class PositionListener implements Listener {
                     event.setCancelled(true);
                 } catch (Exception e) {
                     plugin.sendMessage(player, "Plugin Failed To Create Waypoint!");
-                    plugin.sendConsole("Plugin Failed To Create Waypoint!");
+                    plugin.log().warning("Plugin Failed To Create Waypoint!");
                 }
 
             }
@@ -45,7 +45,7 @@ public class PositionListener implements Listener {
                     event.setCancelled(true);
                 } catch (Exception e) {
                     plugin.sendMessage(player, "Plugin Failed To Create Waypoint!");
-                    plugin.sendConsole("Plugin Failed To Create Waypoint!");
+                    plugin.log().warning("Plugin Failed To Create Waypoint!");
                 }
             }
         }

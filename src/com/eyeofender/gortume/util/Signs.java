@@ -27,7 +27,7 @@ public class Signs {
             if (s.getLocation().getBlock().getTypeId() == 63 || s.getLocation().getBlock().getTypeId() == 68) {
 
                 String arena = s.getLine(1);
-                plugin.sendConsole(arena);
+                plugin.log().info(arena);
                 /**
                  * GameManager gm = plugin.getGameManager(arena);
                  * 

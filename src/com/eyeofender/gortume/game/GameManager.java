@@ -411,59 +411,51 @@ public class GameManager {
     }
 
     public void stopArena() {
-        if (this.getArenaPlayers().size() >= 0) {
 
-            for (Player player : this.getArenaPlayers()) {
-                this.teleport(player, arena.getEndLocation());
-                this.getArenaPlayers().remove(player);
-                this.alive.remove(player);
-                this.getSpec().remove(player);
-                this.getGortumePlayers().remove(player);
-                plugin.getInArena().remove(player);
-                plugin.getNoMove().remove(player);
-                this.clearPotionEffects(player);
-                player.getInventory().clear();
-                player.setHealth(20);
-                player.setFoodLevel(20);
-                player.setLevel(0);
-                player.setExp(0);
-            }
-
-            if (this.getGortumePlayer() != null) {
-                this.teleport(getGortumePlayer(), arena.getEndLocation());
-                this.getArenaPlayers().remove(getGortumePlayer());
-                this.alive.remove(getGortumePlayer());
-                this.getSpec().remove(getGortumePlayer());
-                this.getGortumePlayers().remove(getGortumePlayer());
-                plugin.getInArena().remove(getGortumePlayer());
-                plugin.getNoMove().remove(getGortumePlayer());
-                this.clearPotionEffects(getGortumePlayer());
-                getGortumePlayer().getInventory().clear();
-                getGortumePlayer().setHealth(20);
-                getGortumePlayer().setFoodLevel(20);
-                getGortumePlayer().setLevel(0);
-                getGortumePlayer().setExp(0);
-            }
-
-            for (Player player : this.getSpec()) {
-                this.teleport(player, arena.getEndLocation());
-                this.getArenaPlayers().remove(player);
-                this.alive.remove(player);
-                this.getSpec().remove(player);
-                this.getGortumePlayers().remove(player);
-                plugin.getInArena().remove(player);
-                plugin.getNoMove().remove(player);
-                this.clearPotionEffects(player);
-                player.getInventory().clear();
-                player.setHealth(20);
-                player.setFoodLevel(20);
-                player.setLevel(0);
-                player.setExp(0);
-            }
-
+        for (Player player : this.getArenaPlayers()) {
+            this.teleport(player, arena.getEndLocation());
+            plugin.getInArena().remove(player);
+            plugin.getNoMove().remove(player);
+            this.clearPotionEffects(player);
+            player.getInventory().clear();
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setLevel(0);
+            player.setExp(0);
         }
 
-        plugin.getInArena().remove(this);
+        getArenaPlayers().clear();
+
+        if (this.getGortumePlayer() != null) {
+            this.teleport(getGortumePlayer(), arena.getEndLocation());
+            plugin.getInArena().remove(getGortumePlayer());
+            plugin.getNoMove().remove(getGortumePlayer());
+            this.clearPotionEffects(getGortumePlayer());
+            getGortumePlayer().getInventory().clear();
+            getGortumePlayer().setHealth(20);
+            getGortumePlayer().setFoodLevel(20);
+            getGortumePlayer().setLevel(0);
+            getGortumePlayer().setExp(0);
+        }
+
+        setGortumePlayer(null);
+
+        for (Player player : this.getSpec()) {
+            this.teleport(player, arena.getEndLocation());
+            plugin.getInArena().remove(player);
+            plugin.getNoMove().remove(player);
+            this.clearPotionEffects(player);
+            player.getInventory().clear();
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setLevel(0);
+            player.setExp(0);
+        }
+
+        getSpec().clear();
+
+        getGortumePlayers().clear();
+        getAlive().clear();
 
         plugin.getServer().getScheduler().cancelTask(this.getLobby());
         plugin.getServer().getScheduler().cancelTask(this.getGortume());
@@ -481,15 +473,9 @@ public class GameManager {
 
         this.inLobby = true;
         arena.updateSigns();
-        this.getSpec().clear();
-        this.getArenaPlayers().clear();
-        this.getGortumePlayers().clear();
-        this.getAlive().clear();
 
         plugin.getEmeralds().remove(this.getArena().getRandomBlock());
         this.getArena().getRandomBlock().getBlock().setType(Material.AIR);
-
-        this.gortumePlayer = null;
     }
 
     public void tellArena(String Message) {

@@ -79,13 +79,12 @@ public class ConfigurationHandler {
             List<String> arenas = new ArrayList<String>();
             arenas = plugin.getConfig().getStringList("enabled");
 
-            plugin.sendConsole("Arenas enabled:");
+            plugin.log().info("Enabled arenas: " + arenas.toString().replace("[", "").replace("]", ""));
 
             for (String arena : arenas) {
                 Arena arenaa = new Arena(plugin, arena);
                 GameManager gmn = new GameManager(plugin, arenaa);
                 plugin.getActiveArenas().add(gmn);
-                plugin.sendConsole(arena);
             }
         }
     }

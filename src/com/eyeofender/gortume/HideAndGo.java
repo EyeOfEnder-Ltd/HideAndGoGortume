@@ -35,6 +35,11 @@ import com.eyeofender.gortume.util.Permissions;
 
 public class HideAndGo extends JavaPlugin {
 
+    private static final String MAIN_PREFIX = ChatColor.GOLD + "<" + ChatColor.BLUE + "Gortume" + ChatColor.GOLD + "> ";
+    private static final String CHAT_PREFIX = ChatColor.GOLD + "<" + ChatColor.GOLD + "Chat" + ChatColor.GOLD + "> ";
+    private static final String DEATH_PREFIX = ChatColor.GOLD + "<" + ChatColor.RED + "Death" + ChatColor.GOLD + "> ";
+    private static final String JOIN_PREFIX = ChatColor.GOLD + "<" + ChatColor.GREEN + "Join" + ChatColor.GOLD + "> ";
+
     private Logger log;
     // private MassAPI api;
     private List<GameManager> activeArenas = new ArrayList<GameManager>();
@@ -136,24 +141,24 @@ public class HideAndGo extends JavaPlugin {
      * /
      ****************************************************************************/
 
-    public void sendConsole(String Message) {
-        this.getLogger().info("[Gortume] " + Message);
+    public Logger log() {
+        return log;
     }
 
     public void sendMessage(Player player, String Message) {
-        player.sendMessage(ChatColor.GOLD + "< " + ChatColor.BLUE + "Gortume" + ChatColor.GOLD + " > " + ChatColor.GRAY + Message);
+        player.sendMessage(MAIN_PREFIX + ChatColor.GRAY + Message);
     }
 
     public void sendChat(Player player, String Message) {
-        player.sendMessage(ChatColor.BLUE + "< " + ChatColor.GOLD + "Chat" + ChatColor.BLUE + " > " + ChatColor.GRAY + Message);
+        player.sendMessage(CHAT_PREFIX + ChatColor.GRAY + Message);
     }
 
     public void sendDeath(Player player, String Message) {
-        player.sendMessage(ChatColor.GOLD + "< " + ChatColor.RED + "Death" + ChatColor.GOLD + " > " + ChatColor.GRAY + Message);
+        player.sendMessage(DEATH_PREFIX + ChatColor.GRAY + Message);
     }
 
     public void sendJoin(Player player, String Message) {
-        player.sendMessage(ChatColor.GOLD + "< " + ChatColor.GREEN + "Join" + ChatColor.GOLD + " > " + ChatColor.GRAY + Message);
+        player.sendMessage(JOIN_PREFIX + ChatColor.GRAY + Message);
     }
 
     public void sendArgs(Player player) {

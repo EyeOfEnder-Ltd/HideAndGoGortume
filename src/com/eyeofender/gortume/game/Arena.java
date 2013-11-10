@@ -52,7 +52,7 @@ public class Arena {
             lobbySpawn = new Location(lobbyWorld, plugin.getFc().getArena().getConfigurationSection(Arena).getInt("lobbySpawn.x"), plugin.getFc().getArena().getConfigurationSection(Arena)
                     .getInt("lobbySpawn.y"), plugin.getFc().getArena().getConfigurationSection(Arena).getInt("lobbySpawn.z"), yaw, pitch);
         } else {
-            plugin.sendConsole("Error loading arena " + this.getArenaName());
+            plugin.log().severe("Error loading arena " + this.getArenaName());
         }
 
         World arenaWorld = plugin.getServer().getWorld(plugin.getFc().getArena().getConfigurationSection(Arena).getString("arenaWorld"));
