@@ -31,8 +31,6 @@ import com.eyeofender.gortume.util.DatabaseManager;
 import com.eyeofender.gortume.util.Metadata;
 import com.eyeofender.gortume.util.Permissions;
 
-//import com.eyeofender.massapi.MassAPI;
-
 public class HideAndGo extends JavaPlugin {
 
     private static final String MAIN_PREFIX = ChatColor.GOLD + "<" + ChatColor.BLUE + "Gortume" + ChatColor.GOLD + "> ";
@@ -41,7 +39,6 @@ public class HideAndGo extends JavaPlugin {
     private static final String JOIN_PREFIX = ChatColor.GOLD + "<" + ChatColor.GREEN + "Join" + ChatColor.GOLD + "> ";
 
     private Logger log;
-    // private MassAPI api;
     private List<GameManager> activeArenas = new ArrayList<GameManager>();
     private DatabaseManager database;
 
@@ -76,14 +73,6 @@ public class HideAndGo extends JavaPlugin {
     public void onEnable() {
         PluginManager pm = this.getServer().getPluginManager();
         this.log = this.getLogger();
-
-        try {
-            // this.api = (MassAPI) pm.getPlugin("MassAPI");
-        } catch (NoClassDefFoundError e) {
-            log.severe("Unsupported or no version of MassAPI found.");
-            pm.disablePlugin(this);
-            return;
-        }
 
         Metadata.init(this);
         Bonus.init(this);
