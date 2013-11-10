@@ -58,7 +58,7 @@ public class Bonus implements Listener {
         if (!consumeable) return;
 
         if (event.getAction() != Action.LEFT_CLICK_AIR && event.getAction() != Action.LEFT_CLICK_BLOCK) return;
-        if (event.getItem() == null || !event.getItem().equals(item)) return;
+        if (event.getItem() == null || !event.getItem().isSimilar(item)) return;
 
         Player player = event.getPlayer();
         if (plugin.getInArena().contains(player)) {
@@ -78,13 +78,13 @@ public class Bonus implements Listener {
         Player attacker = (Player) event.getDamager();
         Player attacked = (Player) event.getEntity();
 
-        if (attacker.getInventory().getItemInHand() == null || !attacker.getInventory().getItemInHand().equals(item)) return;
+        if (attacker.getInventory().getItemInHand() == null || !attacker.getInventory().getItemInHand().isSimilar(item)) return;
 
         if (plugin.getInArena().contains(attacker)) {
             GameManager gm = plugin.getPlayersGame(attacker);
             event.setCancelled(true);
 
-            if (plugin.getInArena().contains(attacked) && gm == plugin.getPlayersGame(attacked)) {
+            if (plugin.getInArena().contains(attacked)) {
                 if (gm.isInLobby() || gm.getSpec().contains(attacked)) return;
 
                 if (gm.getSpec().contains(attacker)) {
