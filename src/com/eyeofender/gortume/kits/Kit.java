@@ -35,7 +35,7 @@ public class Kit {
         this.name = name;
 
         String perm = "gortume.kit." + name.toLowerCase();
-        permission = new Permission(perm, "Permission for the kit: " + name + ".", PermissionDefault.TRUE);
+        permission = new Permission(perm, "Permission for the kit: " + name + ".", PermissionDefault.FALSE);
         try {
             Bukkit.getServer().getPluginManager().addPermission(permission);
         } catch (Exception e) {
