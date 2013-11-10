@@ -401,7 +401,7 @@ public class GameManager {
 
     public void leaveArena(Player player) {
         for (Player players : this.getArenaPlayers()) {
-            plugin.sendMessage(players, ChatColor.BLUE + player.getName() + ChatColor.GRAY + " has left the arena.");
+            plugin.sendLeave(players, ChatColor.BLUE + player.getName() + ChatColor.GRAY + " has left the arena.");
         }
 
         arena.updateSigns();
