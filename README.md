@@ -6,5 +6,7 @@
 \____/\____/_/   \__/\__,_/_/ /_/ /_/\___/ 
 
 ```
+
 Minigame for TheMass network.
-Made by: @Avery246813579 and @LimeByte
+
+Made by Avery246813579 and LimeByte
