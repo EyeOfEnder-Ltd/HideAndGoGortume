@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -324,6 +325,22 @@ public class HideAndGo extends JavaPlugin {
             return true;
         } else if (command.equalsIgnoreCase("gortume")) {
             sendMessage(player, "Running " + getDescription().getFullName() + ".");
+            return true;
+        } else if (command.equalsIgnoreCase("givepass")) {
+            if (args.length < 1) {
+                sendMessage(player, ChatColor.RED + "Please specify a player.");
+                return false;
+            }
+
+            Player target = Bukkit.getPlayer(args[0]);
+            if (target != null) {
+                Passes passes = database.getPasses(target);
+                passes.setPasses(passes.getPasses() + 1);
+                sendMessage(player, ChatColor.GREEN + "Gave 1 pass to " + args[0] + ".  They now have " + passes.getPasses() + " passes.");
+                database.savePasses(passes);
+            } else {
+                sendMessage(player, ChatColor.RED + "Could not find player " + args[0] + ".  Are they online?");
+            }
             return true;
         }
 
