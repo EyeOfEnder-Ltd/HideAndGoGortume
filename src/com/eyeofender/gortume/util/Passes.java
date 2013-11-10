@@ -1,10 +1,14 @@
 package com.eyeofender.gortume.util;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import com.avaje.ebean.validation.Length;
 import com.avaje.ebean.validation.NotNull;
 
+@Entity
+@Table(name = "gt_passes")
 public class Passes {
 
     @Id

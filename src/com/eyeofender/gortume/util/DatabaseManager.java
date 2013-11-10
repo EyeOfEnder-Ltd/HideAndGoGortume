@@ -19,6 +19,7 @@ public class DatabaseManager {
         try {
             plugin.getDatabase().find(Passes.class).findRowCount();
         } catch (PersistenceException ex) {
+            plugin.log().info("Installing database tables due to first time usage...");
             plugin.installDDL();
         }
     }
@@ -27,8 +28,10 @@ public class DatabaseManager {
         Passes passes = plugin.getDatabase().find(Passes.class).where().ieq("name", player.getName()).findUnique();
 
         if (passes == null) {
+            plugin.log().info("Creating pass entry for " + player.getName());
             passes = new Passes();
             passes.setName(player.getName());
+            passes.setPasses(1);
             plugin.getDatabase().save(passes);
         }
 

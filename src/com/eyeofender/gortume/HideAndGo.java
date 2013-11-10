@@ -286,7 +286,7 @@ public class HideAndGo extends JavaPlugin {
 
             if (gm != null) {
                 Passes passes = database.getPasses(player);
-                if (passes.getPasses() > 0) {
+                if (passes.hasPass()) {
                     gm.getGortumePlayers().add(player);
                     passes.removePass();
                     database.savePasses(passes);
