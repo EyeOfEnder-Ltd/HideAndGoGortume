@@ -1,6 +1,6 @@
 name: Gortume
 main: com.eyeofender.gortume.HideAndGo
-version: 1.4.1
+version: 1.4.2
 authors: [avery246813579, LimeByte]
 description: Gortume minigame for TheMass.
 database: true
@@ -9,33 +9,89 @@ commands:
         description: Sets a Gortume waypoint to your location.
         usage: /<command> <waypoint> <arena>
         aliases: s
+        permission: gortume.set
     create:
         description: Creates a arena with the specified name.
         usage: /<command> <arenaName>
+        permission: gortume.create
     join:
         description: Joins the specified arena.
         usage: /<command> <arena>
         aliases: j
+        permission: gortume.join
     countdown:
         description: Starts the arena countdown.
         usage: /<command>
+        permission: gortume.countdown
     leave:
         description: Leaves the current arena.
         usage: /<command>
         aliases: l
+        permission: gortume.leave
     pass:
         description: Uses a Gortume pass.
         usage: /<command>
         aliases: p
+        permission: gortume.pass
     enable:
         description: Enables the specified arena.
         usage: /<command> <arena>
         aliases: e
+        permission: gortume.enable
     kit:
         description: Selects a kit.
         usage: /<command> <Travler|Ninja|Tank|Spy|God>
         aliases: k
+        permission: gortume.kit
     gortume:
         description: Gets the running version of Gortume.
         usage: /<command>
         aliases: g
+        permission: gortume.gortume
+    givepass:
+        description: Gives a player a pass.
+        usage: /<command> <player>
+        permission: gortume.givepass
+
+permissions:
+    gortume.user:
+        description: Grants the player all user commands.
+        default: true
+        children:
+            gortume.join: true
+            gortume.leave: true
+            gortume.pass: true
+            gortume.kit: true
+            gortume.gortume: true
+    gortume.admin:
+        description: Grants the player all admin commands.
+        default: op
+        children:
+            gortume.user: true
+            gortume.set: true
+            gortume.create: true
+            gortume.countdown: true
+            gortume.enable: true
+            gortume.givepass: true
+    gortume.set:
+        description: Allows the user to run the set command.
+    gortume.create:
+        description: Allows the user to run the create command.
+    gortume.join:
+        description: Allows the user to run the join command.
+    gortume.leave:
+        description: Allows the user to run the leave command.
+    gortume.countdown:
+        description: Allows the user to run the countdown command.
+    gortume.leave:
+        description: Allows the user to run the leave command.
+    gortume.pass:
+        description: Allows the user to run the pass command.
+    gortume.enable:
+        description: Allows the user to run the enable command.
+    gortume.kit:
+        description: Allows the user to run the kit command.
+    gortume.gortume:
+        description: Allows the user to run the gortume command.
+    gortume.givepass:
+        description: Allows the user to run the givepass command.
