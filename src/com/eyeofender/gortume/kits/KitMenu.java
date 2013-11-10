@@ -29,10 +29,11 @@ public class KitMenu {
         menuItem.setItemMeta(meta);
 
         Kit[] kits = Kit.getKits().toArray(new Kit[Kit.getKits().size()]);
+        int slots = kits.length * 2 - 1;
         kitMenu = Bukkit.getServer().createInventory(null, (int) (Math.ceil(kits.length / 9.0) * 9.0), TITLE);
 
-        for (int i = 0; i < kits.length; i++) {
-            kitMenu.setItem(i, kits[i].getIcon());
+        for (int i = 0; i < slots; i++) {
+            if (i % 2 == 0) kitMenu.setItem(i, kits[i / 2].getIcon());
         }
     }
 
