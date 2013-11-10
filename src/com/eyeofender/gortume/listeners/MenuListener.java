@@ -15,8 +15,10 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getItem() == null) return;
+
         Player player = event.getPlayer();
-        if (KitMenu.areEqual(KitMenu.getMenuItem(), event.getItem())) {
+        if (event.getItem().isSimilar(KitMenu.getMenuItem())) {
             KitMenu.display(player);
             event.setCancelled(true);
         }
@@ -31,7 +33,7 @@ public class MenuListener implements Listener {
 
         if (event.getInventory().getTitle().equals(KitMenu.getTitle())) {
             for (Kit kit : Kit.getKits()) {
-                if (KitMenu.areEqual(clicked, kit.getIcon())) {
+                if (clicked.isSimilar(kit.getIcon())) {
                     kit.equip(player);
                     event.setCancelled(true);
                     return;

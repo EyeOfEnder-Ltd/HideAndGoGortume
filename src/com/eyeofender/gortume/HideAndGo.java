@@ -173,233 +173,156 @@ public class HideAndGo extends JavaPlugin {
      ****************************************************************************/
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String CommandLabel, String[] args) {
-
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player player = (Player) sender;
+        String command = cmd.getName();
 
-        if (CommandLabel.equalsIgnoreCase("Set") || CommandLabel.equalsIgnoreCase("S")) {
-
-            if (args.length == 0) {
-
-                this.sendMessage(player, "### Help Menu ### - To be added.");
-
-            } else if (args.length == 1) {
-
-                this.sendArgs(player);
-
-            } else if (args.length == 2) {
-
-                if (args[0].equalsIgnoreCase("Lobby")) {
-
-                    ac.setLobby(player, args[1]);
-
-                }
-
-                if (args[0].equalsIgnoreCase("BlockSpawn")) {
-
-                    ac.setRandom(player, args[1]);
-
-                }
-
-                if (args[0].equalsIgnoreCase("World")) {
-
-                    ac.setArenaWorld(player, args[1]);
-
-                }
-
-                if (args[0].equalsIgnoreCase("GortumeSpawn")) {
-
-                    ac.setGortumeSpawn(player, args[1]);
-
-                }
-
-                if (args[0].equalsIgnoreCase("RegularSpawn")) {
-
-                    ac.setRegularSpawn(player, args[1]);
-
-                }
-
-                if (args[0].equalsIgnoreCase("End")) {
-
-                    ac.setEndLocation(player, args[1]);
-
-                }
-
-                if (args[0].equalsIgnoreCase("Arena")) {
-
-                    ac.setArena(player, args[1]);
-
-                }
-
+        if (command.equalsIgnoreCase("set")) {
+            if (args.length < 2) {
+                sendMessage(player, ChatColor.RED + "Please specify both waypoint and arena.");
+                return false;
             }
 
-        }
-
-        if (CommandLabel.equalsIgnoreCase("Create")) {
-
-            if (args.length == 0) {
-
-                this.sendMessage(player, "Help Menu");
-
-            } else if (args.length == 1) {
-
-                ac.createArena(player, args[0]);
-
+            if (args[0].equalsIgnoreCase("lobby")) {
+                ac.setLobby(player, args[1]);
+            } else if (args[0].equalsIgnoreCase("blockspawn")) {
+                ac.setRandom(player, args[1]);
+            } else if (args[0].equalsIgnoreCase("world")) {
+                ac.setArenaWorld(player, args[1]);
+            } else if (args[0].equalsIgnoreCase("gortumespawn")) {
+                ac.setGortumeSpawn(player, args[1]);
+            } else if (args[0].equalsIgnoreCase("regularspawn")) {
+                ac.setRegularSpawn(player, args[1]);
+            } else if (args[0].equalsIgnoreCase("end")) {
+                ac.setEndLocation(player, args[1]);
+            } else if (args[0].equalsIgnoreCase("arena")) {
+                ac.setArena(player, args[1]);
             } else {
-                this.sendArgs(player);
+                sendMessage(player, ChatColor.RED + "Invalid waypoint!");
             }
-        }
 
-        if (CommandLabel.equalsIgnoreCase("Join")) {
+            return true;
+        } else if (command.equalsIgnoreCase("create")) {
+            if (args.length < 1) {
+                sendMessage(player, ChatColor.RED + "Please specify an arena name.");
+                return false;
+            }
 
-            if (args.length == 0) {
+            ac.createArena(player, args[0]);
+            return true;
+        } else if (command.equalsIgnoreCase("join")) {
+            if (args.length < 1) {
+                sendMessage(player, ChatColor.RED + "Please specify an arena.");
+                return false;
+            }
 
-                this.sendMessage(player, "You have to join a arena.");
+            String arena = args[0].toLowerCase();
+            GameManager gm = this.getGameManager(arena);
 
-            } else if (args.length == 1) {
-                String arena = args[0].toLowerCase();
-
-                GameManager gm = this.getGameManager(arena);
-
-                if (activeArenas.contains(gm)) {
-
-                    gm.joinArena(player);
-
-                } else {
-
-                    this.sendMessage(player, "Arena not found " + arena + ".");
-
-                }
-
+            if (activeArenas.contains(gm)) {
+                gm.joinArena(player);
             } else {
-                this.sendArgs(player);
+                this.sendMessage(player, ChatColor.RED + "Arena not found " + arena + ".");
             }
 
-        }
+            return true;
+        } else if (command.equalsIgnoreCase("enable")) {
+            if (args.length < 1) {
+                sendMessage(player, ChatColor.RED + "Please specify an arena.");
+                return false;
+            }
 
-        if (CommandLabel.equalsIgnoreCase("Enable")) {
+            String arenaName = args[0].toLowerCase();
 
-            if (args.length == 0) {
-
-                this.sendMessage(player, "Do /Enable (Arena) to enable a arena.");
-
-            } else if (args.length == 1) {
-
-                String arena = args[0].toLowerCase();
-
-                if (this.getFc().getArena().contains(arena)) {
-
-                    for (GameManager gm : this.getActiveArenas()) {
-                        if (gm.getArenaName().equals(arena)) {
-                            this.sendMessage(player, "Arena already running.");
-                            return false;
-                        }
+            if (this.getFc().getArena().contains(arenaName)) {
+                for (GameManager gm : this.getActiveArenas()) {
+                    if (gm.getArenaName().equals(arenaName)) {
+                        this.sendMessage(player, ChatColor.RED + "Arena already running.");
+                        return true;
                     }
-
-                    Arena arenaa = new Arena(this, arena);
-                    GameManager gmn = new GameManager(this, arenaa);
-
-                    this.getActiveArenas().add(gmn);
-
-                    List<String> arenas = new ArrayList<String>();
-                    arenas = this.getConfig().getStringList("enabled");
-
-                    arenas.add(arena);
-
-                    this.getConfig().set("enabled", arenas);
-
-                    this.sendMessage(player, "Arenas saved.");
-
-                    this.saveConfig();
-
-                } else {
-                    this.sendMessage(player, "There is no arena called " + arena + "!");
                 }
 
+                Arena arena = new Arena(this, arenaName);
+                GameManager gm = new GameManager(this, arena);
+
+                this.getActiveArenas().add(gm);
+
+                List<String> arenas = new ArrayList<String>();
+                arenas = this.getConfig().getStringList("enabled");
+
+                arenas.add(arenaName);
+
+                this.getConfig().set("enabled", arenas);
+
+                this.sendMessage(player, "Arenas saved.");
+
+                this.saveConfig();
+            } else {
+                this.sendMessage(player, ChatColor.RED + "There is no arena called " + arenaName + "!");
             }
 
-        }
+            return true;
+        } else if (command.equalsIgnoreCase("countdown")) {
+            GameManager gm = this.getPlayersGame(player);
 
-        if (CommandLabel.equalsIgnoreCase("Countdown") || CommandLabel.equalsIgnoreCase("C")) {
+            if (gm != null) {
+                gm.setUpGame();
+                this.sendMessage(player, "Countdown has started.");
+            } else {
+                this.sendMessage(player, ChatColor.RED + "You have to be in a arena to do this.");
+            }
 
-            if (args.length == 0) {
+            return true;
+        } else if (command.equalsIgnoreCase("leave")) {
+            GameManager gm = this.getPlayersGame(player);
+
+            if (gm != null) {
+                gm.leaveArena(player);
+                this.sendMessage(player, "You have left the arena.");
+            } else {
+                this.sendMessage(player, ChatColor.RED + "You have to be in a arena to do this.");
+            }
+
+            return true;
+        } else if (command.equalsIgnoreCase("pass")) {
+            GameManager gm = this.getPlayersGame(player);
+
+            if (gm != null) {
+                gm.useGortumePass(player);
+            } else {
+                this.sendMessage(player, ChatColor.RED + "You have to be in a arena to do this.");
+            }
+
+            return true;
+        } else if (command.equalsIgnoreCase("kit")) {
+            if (args.length < 1) {
+                sendMessage(player, ChatColor.RED + "Please specify a kit.");
+                return false;
+            }
+
+            if (this.getInArena().contains(player)) {
                 GameManager gm = this.getPlayersGame(player);
 
-                if (gm != null) {
-                    gm.setUpGame();
-                    this.sendMessage(player, "Countdown has started.");
-                } else {
-                    this.sendMessage(player, "You have to be in a arena to do this.");
-                }
-            } else {
-                this.sendArgs(player);
-            }
-        }
-
-        if (CommandLabel.equalsIgnoreCase("Leave") || CommandLabel.equalsIgnoreCase("L")) {
-            if (args.length == 0) {
-                GameManager gm = this.getPlayersGame(player);
-
-                if (gm != null) {
-                    gm.leaveArena(player);
-                    this.sendMessage(player, "You have left the arena.");
-                } else {
-                    this.sendMessage(player, "You have to be in a arena to do this.");
-                }
-            } else {
-                this.sendArgs(player);
-            }
-
-        }
-
-        if (CommandLabel.equalsIgnoreCase("Pass")) {
-            if (args.length == 0) {
-                GameManager gm = this.getPlayersGame(player);
-
-                if (gm != null) {
-                    gm.useGortumePass(player);
-                } else {
-                    this.sendMessage(player, "You have to be in a arena to do this.");
-                }
-
-            } else {
-                this.sendArgs(player);
-            }
-        }
-
-        if (CommandLabel.equalsIgnoreCase("Kit")) {
-            if (args.length == 0) {
-                this.sendMessage(player, "Usage: /Kit ( Travler | Ninja | Tank | Spy | God ) - Picks a kit.");
-            } else if (args.length == 1) {
-                String kit = args[0];
-
-                if (this.getInArena().contains(player)) {
-                    GameManager gm = this.getPlayersGame(player);
-
-                    if (gm.isInLobby()) {
-                        if (kit.equalsIgnoreCase("Travler") || kit.equalsIgnoreCase("Ninja") || kit.equalsIgnoreCase("Tank") || kit.equalsIgnoreCase("Spy") || kit.equalsIgnoreCase("God")) {
-                            Kit.getByName(args[0]).equip(player);
-                        } else {
-                            this.sendMessage(player, "Kit not found.");
-                        }
+                if (gm.isInLobby()) {
+                    Kit kit = Kit.getByName(args[0]);
+                    if (kit != null) {
+                        kit.equip(player);
                     } else {
-                        this.sendMessage(player, "You have to be in the lobby to pick a kit.");
+                        this.sendMessage(player, ChatColor.RED + "Kit not found.");
                     }
                 } else {
-                    this.sendMessage(player, "You have to be in a arena to pick a kit.");
+                    this.sendMessage(player, ChatColor.RED + "You have to be in the lobby to pick a kit.");
                 }
-
             } else {
-                this.sendArgs(player);
+                this.sendMessage(player, ChatColor.RED + "You have to be in a arena to pick a kit.");
             }
-        }
-
-        if (CommandLabel.equalsIgnoreCase("version")) {
-            this.sendMessage(player, "Running version " + getDescription().getVersion() + ".");
+            return true;
+        } else if (command.equalsIgnoreCase("gortume")) {
+            sendMessage(player, "Running " + getDescription().getFullName() + ".");
+            return true;
         }
 
         return false;
-
     }
 
     /***************************************************************************

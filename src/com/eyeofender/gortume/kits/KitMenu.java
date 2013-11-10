@@ -48,23 +48,4 @@ public class KitMenu {
         player.openInventory(kitMenu);
     }
 
-    public static boolean areEqual(ItemStack item1, ItemStack item2) {
-        if (!item1.isSimilar(item2)) return false;
-
-        if (item1.hasItemMeta() && item2.hasItemMeta()) {
-            ItemMeta meta1 = item1.getItemMeta();
-            ItemMeta meta2 = item2.getItemMeta();
-
-            if (meta1.hasDisplayName() && meta2.hasDisplayName()) {
-                return meta1.getDisplayName().equals(meta2.getDisplayName());
-            } else if (!meta1.hasDisplayName() && !meta2.hasDisplayName()) {
-                return true;
-            }
-        } else if (!item1.hasItemMeta() && !item2.hasItemMeta()) {
-            return true;
-        }
-
-        return false;
-    }
-
 }

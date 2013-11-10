@@ -1,31 +1,41 @@
 name: Gortume
 main: com.eyeofender.gortume.HideAndGo
-version: 1.3.3
+version: 1.3.4
 authors: [avery246813579, LimeByte]
 description: Gortume A simple plugin.
 database: false
 commands:
-    Set:
-        description: Sets gortume points.
-    S:
-        description: Sets gortume points.
-    Create:
-        description: Creates a arena.
-    Join:
-        description: Sets gortume points.
-    Countdown:
-        description: Sets gortume points.
-    C:
-        description: Sets gortume points.
-    Leave:
-        description: Sets gortume points.
-    L:
-        description: Sets gortume points.
-    Pass:
-        description: Sets gortume points.
-    Enable:
-        description: Description.
-    Kit:
-        description: Description.
-    version:
+    set:
+        description: Sets a Gortume waypoint to your location.
+        usage: /<command> <waypoint> <arena>
+        aliases: s
+    create:
+        description: Creates a arena with the specified name.
+        usage: /<command> <arenaName>
+    join:
+        description: Joins the specified arena.
+        usage: /<command> <arena>
+        aliases: j
+    countdown:
+        description: Starts the arena countdown.
+        usage: /<command>
+    leave:
+        description: Leaves the current arena.
+        usage: /<command>
+        aliases: l
+    pass:
+        description: Uses a Gortume pass.
+        usage: /<command>
+        aliases: p
+    enable:
+        description: Enables the specified arena.
+        usage: /<command> <arena>
+        aliases: e
+    kit:
+        description: Selects a kit.
+        usage: /<command> <Travler|Ninja|Tank|Spy|God>
+        aliases: k
+    gortume:
         description: Gets the running version of Gortume.
+        usage: /<command>
+        aliases: g
