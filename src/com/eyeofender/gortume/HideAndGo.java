@@ -49,14 +49,14 @@ public class HideAndGo extends JavaPlugin {
     private RankHandler rh = new RankHandler(this);
 
     public RankHandler getRh() {
-		return rh;
-	}
+        return rh;
+    }
 
-	public void setRh(RankHandler rh) {
-		this.rh = rh;
-	}
+    public void setRh(RankHandler rh) {
+        this.rh = rh;
+    }
 
-	public List<GameManager> getActiveArenas() {
+    public List<GameManager> getActiveArenas() {
         return activeArenas;
     }
 
@@ -161,17 +161,17 @@ public class HideAndGo extends JavaPlugin {
     public void sendJoin(Player player, String Message) {
         player.sendMessage(JOIN_PREFIX + ChatColor.GRAY + Message);
     }
-    
-    public void sendLeave(Player player, String Message){
-    	player.sendMessage(LEAVE_PREFIX + ChatColor.GRAY + Message);
+
+    public void sendLeave(Player player, String Message) {
+        player.sendMessage(LEAVE_PREFIX + ChatColor.GRAY + Message);
     }
 
     public void sendObject(Player player, String Message) {
         player.sendMessage(OBJECT_PREFIX + ChatColor.GRAY + Message);
     }
-    
-    public void sendChatMessage(Player player, String Prefix , String Message, String Sender, ChatColor color, String rank, ChatColor rankColor, ChatColor nameColor){
-    	player.sendMessage(ChatColor.GOLD + "< " + ChatColor.BLUE +  "" + Prefix + "" + ChatColor.GOLD + " > " + rankColor + rank + nameColor + "<" + Sender + ">" + " " +  color + Message);
+
+    public void sendChatMessage(Player player, String Prefix, String Message, String Sender, ChatColor color, String rank, ChatColor rankColor, ChatColor nameColor) {
+        player.sendMessage(ChatColor.GOLD + "< " + ChatColor.BLUE + "" + Prefix + "" + ChatColor.GOLD + " > " + rankColor + rank + nameColor + "<" + Sender + ">" + " " + color + Message);
     }
 
     public void sendArgs(Player player) {
@@ -308,14 +308,14 @@ public class HideAndGo extends JavaPlugin {
             if (gm != null) {
                 Passes passes = database.getPasses(player);
                 if (passes.hasPass()) {
-                	if(!gm.getGortumePlayers().contains(player)){
-	                    gm.getGortumePlayers().add(player);
-	                    passes.removePass();
-	                    database.savePasses(passes);
-	                    gm.tellArena(player.getName() + " has used there Gortume Pass and now entered the Gortume drawing.");
-                	}else{
-                		sendMessage(player, "You have already used a Gortume Pass.");
-                	}
+                    if (!gm.getGortumePlayers().contains(player)) {
+                        gm.getGortumePlayers().add(player);
+                        passes.removePass();
+                        database.savePasses(passes);
+                        gm.tellArena(player.getName() + " has used there Gortume Pass and now entered the Gortume drawing.");
+                    } else {
+                        sendMessage(player, "You have already used a Gortume Pass.");
+                    }
                 } else {
                     sendMessage(player, ChatColor.RED + "You do not have any passes.");
                 }
