@@ -119,7 +119,7 @@ public class Arena {
             list.add(loc.getWorld().getName() + ", " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ());
         }
 
-        plugin.getFc().getArena().set("signs", list);
+        plugin.getFc().getArena().getConfigurationSection(arenaName.toLowerCase()).set("signs", list);
         plugin.getFc().saveArena();
     }
 
