@@ -16,6 +16,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import pgDev.bukkit.DisguiseCraft.disguise.Disguise;
+import pgDev.bukkit.DisguiseCraft.disguise.DisguiseType;
+
 import com.eyeofender.gortume.HideAndGo;
 import com.eyeofender.gortume.kits.KitMenu;
 import com.eyeofender.gortume.timers.BatTimer;
@@ -28,6 +31,10 @@ import com.eyeofender.gortume.util.Cuboid;
 
 public class GameManager {
 
+	//VANISH INSTEAD OF HIDE
+	//MOB DISGUISE
+	//PERMISSIONS TO QUERYS
+	
     private HideAndGo plugin;
 
     private String arenaName;
@@ -100,6 +107,7 @@ public class GameManager {
         this.setGortumeTimer(plugin.getConfigHelper().getGortumeTimer());
         this.setSoundTimer(plugin.getConfigHelper().getSoundTimer());
         this.setBatTimer(plugin.getConfigHelper().getBatTimer());
+        this.setEndTimer(plugin.getConfigHelper().getEndTimer());
     }
 
     public void joinArena(Player player) {
@@ -189,8 +197,9 @@ public class GameManager {
             } else {
                 Random generator = new Random();
                 int randoms = generator.nextInt(this.getArenaPlayers().size()) + 0;
-                Player player = this.getArenaPlayers().get(randoms);
-
+                int randomNumber = generator.nextInt(randoms) + 0;
+                Player player = this.getArenaPlayers().get(randomNumber);
+                
                 this.setGortumePlayer(player);
 
             }
@@ -240,6 +249,9 @@ public class GameManager {
                     }
 
                 } else {
+                	//Disguise d = new Disguise(plugin.dcAPI.newEntityID(), "TheMass_Gortume", DisguiseType.Player);
+                	//plugin.dcAPI.disguisePlayer(player, d);
+                	
                     /** Clears players inventory **/
                     this.clearInventory(player);
 
@@ -331,14 +343,17 @@ public class GameManager {
         this.bat = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new BatTimer(plugin, this), 20L, 20L);
         this.sound = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new SoundTimer(plugin, this), 20L, 20L);
 
-        this.getBlockLocation().getBlock().setType(Material.EMERALD_BLOCK);
     }
 
     public void addSpectator(Player player) {
         this.alive.remove(player);
         this.getSpec().add(player);
         this.clearPotionEffects(player);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 5));
+        
+        for(Player players : plugin.getServer().getOnlinePlayers()){
+        	players.hidePlayer(player);
+        }
+        
         this.teleport(player, arena.getRegularSpawn());
         plugin.sendMessage(player, "You have become a spectator.");
         player.setAllowFlight(true);
@@ -351,7 +366,9 @@ public class GameManager {
         this.addSpectator(player);
         this.getClicked().add(player);
         this.clearPotionEffects(player);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1000000, 5));
+        for(Player players : plugin.getServer().getOnlinePlayers()){
+        	players.hidePlayer(player);
+        }       
         plugin.sendMessage(player, "You have clicked the emerald! Wait until the rest of you team does!");
         player.setAllowFlight(true);
         player.setFlySpeed(0.1F);
@@ -381,6 +398,9 @@ public class GameManager {
         this.setGame(false);
         this.setGameTimer(-1);
 
+        this.getBlockLocation().getBlock().setType(Material.AIR);
+
+        
         // Clears Everything
         for (Player player : this.getArenaPlayers()) {
             this.clearPotionEffects(player);
@@ -390,9 +410,26 @@ public class GameManager {
             player.setLevel(0);
 
             plugin.getCantTalk().remove(player);
+            
+            for(Player players : plugin.getServer().getOnlinePlayers()){
+            	players.showPlayer(player);
+            }   
+            
+            //plugin.dcAPI.undisguisePlayer(player);
+            
+            player.sendMessage(ChatColor.GOLD + "-=- -=-=- -=-=-=- -=-=-=-=- -=-=-=- -=-=- -=-");
+            player.sendMessage("");
+            
             plugin.sendChat(player, "Chat has been enabled.");
-        }
+            
+            player.sendMessage("");
+            
+            player.sendMessage(ChatColor.GOLD + "-=- -=-=- -=-=-=- -=-=-=-=- -=-=-=- -=-=- -=-");
 
+        }
+        this.getBlockLocation().getBlock().setType(Material.AIR);
+
+        
         plugin.getServer().getScheduler().cancelTask(this.getGame());
         plugin.getServer().getScheduler().cancelTask(this.getBat());
         plugin.getServer().getScheduler().cancelTask(this.getSound());
@@ -409,6 +446,17 @@ public class GameManager {
 
         this.teleport(player, arena.getEndLocation());
         /** Leaves all Arrays **/
+    	this.clearInventory(player);
+
+    	for(Player players : plugin.getServer().getOnlinePlayers()){
+        	players.showPlayer(player);
+        }       	
+    	
+    	//if (!plugin.dcAPI.isDisguised(player)) {
+    	//}else{
+    	//	plugin.dcAPI.undisguisePlayer(player);
+    	//}
+    	
         this.getArenaPlayers().remove(player);
         this.alive.remove(player);
         this.getSpec().remove(player);
@@ -439,6 +487,7 @@ public class GameManager {
         if (this.getArenaPlayers().size() >= 0) {
 
             for (Player player : this.getArenaPlayers()) {
+            	this.clearInventory(player);
                 plugin.sendMessage(player, "Arena has been stopped.");
                 this.teleport(player, arena.getEndLocation());
                 this.alive.remove(player);
@@ -453,6 +502,12 @@ public class GameManager {
                 player.setFoodLevel(20);
                 player.setLevel(0);
                 player.setExp(0);
+                
+              //  plugin.dcAPI.undisguisePlayer(player);
+                
+                for(Player players : plugin.getServer().getOnlinePlayers()){
+                	players.showPlayer(player);
+                }   
             }
 
             this.getArenaPlayers().clear();
@@ -481,7 +536,6 @@ public class GameManager {
         this.getAlive().clear();
 
         plugin.getEmeralds().remove(this.getArena().getRandomBlock());
-        this.getArena().getRandomBlock().getBlock().setType(Material.AIR);
 
         this.gortumePlayer = null;
     }
@@ -501,7 +555,23 @@ public class GameManager {
      ****************************************************************************/
 
     public void teleport(Player p, Location loc) {
-        p.teleport(loc.clone().add(0.5D, 0.5D, 0.5D));
+        Location l = loc.clone().add(0.5D, 0.5D, 0.5D);
+        
+        if(l.getBlock().equals(Material.AIR)){
+        	p.teleport(l);
+        	return;
+        }else{
+            Location l2 = l.clone().add(0.0D, 0.0D, 1.0D);
+            
+            if(l2.getBlock().equals(Material.AIR)){
+            	p.teleport(l2);
+            	return;
+            }else{
+                Location l3 = l.clone().add(1.0D, 0.0D, 0.0D);
+                
+                p.teleport(l3);
+            }
+        }
     }
 
     public void clearPotionEffects(Player player) {

@@ -56,7 +56,7 @@ public class Kit {
 
         kit = new Kit("Ninja");
         kit.setIcon(Material.LEATHER_HELMET);
-        kit.addItems(Bonus.speedCarrot.getItem(), Bonus.invisiblePie.getItem(), Bonus.confusionCookie.getItem(), Bonus.slownessSteak.getItem());
+        kit.addItems(Bonus.speedCarrot.getItem(), Bonus.invisiblePie.getItem(), Bonus.knockbackStick.getItem());
         kit.save();
 
         kit = new Kit("Tank");
@@ -66,7 +66,7 @@ public class Kit {
 
         kit = new Kit("Spy");
         kit.setIcon(Material.IRON_HELMET);
-        kit.addItems(Bonus.speedCarrot.getItem(), Bonus.invisiblePie.getItem(), Bonus.confusionCookie.getItem());
+        kit.addItems(Bonus.speedCarrot.getItem(), Bonus.speedCarrot.getItem(), Bonus.invisiblePie.getItem(), Bonus.invisiblePie.getItem(),  Bonus.confusionCookie.getItem(), Bonus.confusionCookie.getItem());
         kit.save();
 
         kit = new Kit("God");
@@ -89,10 +89,12 @@ public class Kit {
     }
 
     public void equip(Player player) {
-        if (!player.hasPermission(this.permission)) {
+        if (!player.hasPermission(this.permission) && !player.isOp()) {
             player.sendMessage(ChatColor.RED + "You do not have permission for kit " + ChatColor.GOLD + this.name + ChatColor.RED + "");
             return;
         }
+        
+        player.getInventory().clear();
 
         PlayerInventory inv = player.getInventory();
 

@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.eyeofender.gortume.game.GameManager;
 import com.eyeofender.gortume.kits.Bonus;
 import com.google.common.collect.Lists;
 
@@ -29,7 +30,17 @@ public class SpeedCarrot extends Bonus {
 
     @Override
     protected void onConsume(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 2));
+    	GameManager gm = super.getPlugin().getPlayersGame(player);
+    	
+    	if(!gm.isInLobby()){
+    		if(gm.getAlive().contains(player)){
+    	    	player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 2));
+    		}else{
+    			super.getPlugin().sendError(player, "You can not use items if you are not alive.");
+    		}
+    	}else{
+    		super.getPlugin().sendError(player, "You can not use items if you are not in game.");
+    	}
     }
 
 }

@@ -75,16 +75,16 @@ public class GameListener implements Listener {
                     Player player = event.getPlayer();
                     
                 	if(plugin.getInArena().contains(player)){
-                		if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "God")){
+                		if(sign.getLine(1).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "God")){
                 			player.performCommand("kit god");
-                		}else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Spy")){
+                		}else if(sign.getLine(1).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Spy")){
                 			player.performCommand("kit spy");
                 		}
-                		else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Tank")){
+                		else if(sign.getLine(1).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Tank")){
                 			player.performCommand("kit Tank");
-                		}else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Ninja")){
+                		}else if(sign.getLine(1).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Ninja")){
                 			player.performCommand("kit Ninja");
-                		}else if(sign.getLine(0).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Travler")){
+                		}else if(sign.getLine(1).equalsIgnoreCase("" + ChatColor.GOLD + ChatColor.BOLD + "Travler")){
                 			player.performCommand("kit Travler");
                 		}
                 	}else{
@@ -254,13 +254,8 @@ public class GameListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        if (plugin.getCantTalk().contains(e.getPlayer())) {
-            e.setCancelled(true);
-            plugin.sendChat(e.getPlayer(), "Chatting is disibled while in game.");
-            return;
-        }
-        
         e.setCancelled(true);
+       
         Player player = e.getPlayer();
         for(Player players : plugin.getServer().getOnlinePlayers()){
         	if(plugin.getInArena().contains(players)){
@@ -280,15 +275,38 @@ public class GameListener implements Listener {
                     			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.YELLOW , "[Owner] ", ChatColor.YELLOW, ChatColor.AQUA);
                 			}else if(plugin.getRh().getMods().contains(player.getName())){
                     			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.WHITE , "[Mod] ", ChatColor.RED, ChatColor.GOLD);
+                			}else if(plugin.getRh().getAdmins().contains(player.getName())){
+                    			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.YELLOW , "[Admin] ", ChatColor.RED, ChatColor.DARK_RED);
                 			}
                 			else{
                 				plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.WHITE , "", ChatColor.WHITE, ChatColor.WHITE);
                 			}
         					
+        				}else{
+
+        				if (plugin.getCantTalk().contains(e.getPlayer())) {
+        					
+        					if(p1.getSpec().contains(player)){
+        						if(p1.getSpec().contains(players)){
+        							if(plugin.getRh().getDevelopers().contains(player.getName())){
+                            			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.YELLOW , "[Dev] ", ChatColor.RED, ChatColor.BLUE);
+                        			}else if(plugin.getRh().getOwners().contains(player.getName())){
+                            			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.YELLOW , "[Owner] ", ChatColor.YELLOW, ChatColor.AQUA);
+                        			}else if(plugin.getRh().getMods().contains(player.getName())){
+                            			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.WHITE , "[Mod] ", ChatColor.RED, ChatColor.GOLD);
+                        			}else if(plugin.getRh().getAdmins().contains(player.getName())){
+                            			plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.YELLOW , "[Admin] ", ChatColor.RED, ChatColor.DARK_RED);
+                        			}
+                        			else{
+                        				plugin.sendChatMessage(players, p1.getArenaName(), e.getMessage(),player.getName() , ChatColor.WHITE , "", ChatColor.WHITE, ChatColor.WHITE);
+                        			}
+        						}
+        					}else{
+        			        	plugin.sendChat(e.getPlayer(), "Chatting is disibled while in game.");
+        					}
         				}
-        				
         			}
-        			
+        			}
         		}
         	}else{
         		if(!plugin.getInArena().contains(player)){
@@ -299,6 +317,8 @@ public class GameListener implements Listener {
             			plugin.sendChatMessage(players, "Lobby", e.getMessage(),player.getName() , ChatColor.YELLOW , "[Owner] ", ChatColor.YELLOW, ChatColor.AQUA);
         			}else if(plugin.getRh().getMods().contains(player.getName())){
             			plugin.sendChatMessage(players, "Lobby", e.getMessage(),player.getName() , ChatColor.WHITE , "[Mod] ", ChatColor.RED, ChatColor.GOLD);
+        			}else if(plugin.getRh().getAdmins().contains(player.getName())){
+            			plugin.sendChatMessage(players, "Lobby", e.getMessage(),player.getName() , ChatColor.YELLOW , "[Admin] ", ChatColor.RED, ChatColor.DARK_RED);
         			}
         			else{
         				plugin.sendChatMessage(players, "Lobby", e.getMessage(),player.getName() , ChatColor.WHITE , "", ChatColor.WHITE, ChatColor.WHITE);

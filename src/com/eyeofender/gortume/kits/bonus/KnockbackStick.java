@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import com.eyeofender.gortume.game.GameManager;
 import com.eyeofender.gortume.kits.Bonus;
 
 public class KnockbackStick extends Bonus {
@@ -27,8 +28,18 @@ public class KnockbackStick extends Bonus {
 
     @Override
     protected void onPlayerHit(Player player) {
-        Vector direction = player.getLocation().getDirection();
-        player.setVelocity(direction.setY(-0.5).multiply(-2));
+    	GameManager gm = super.getPlugin().getPlayersGame(player);
+    	
+    	if(!gm.isInLobby()){
+    		if(gm.getAlive().contains(player)){
+    			Vector direction = player.getLocation().getDirection();
+    	        player.setVelocity(direction.setY(-0.1).multiply(-1));
+    	}else{
+    			super.getPlugin().sendError(player, "You can not use items if you are not alive.");
+    		}
+    	}else{
+    		super.getPlugin().sendError(player, "You can not use items if you are not in game.");
+    	}
     }
 
 }

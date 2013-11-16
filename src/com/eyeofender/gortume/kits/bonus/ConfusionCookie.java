@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.eyeofender.gortume.game.GameManager;
 import com.eyeofender.gortume.kits.Bonus;
 
 public class ConfusionCookie extends Bonus {
@@ -28,7 +29,17 @@ public class ConfusionCookie extends Bonus {
 
     @Override
     protected void onPlayerHit(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 400, 2));
+    	GameManager gm = super.getPlugin().getPlayersGame(player);
+    	
+    	if(!gm.isInLobby()){
+    		if(gm.getAlive().contains(player)){
+    			player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 400, 2));
+    		}else{
+    			super.getPlugin().sendError(player, "You can not use items if you are not alive.");
+    		}
+    	}else{
+    		super.getPlugin().sendError(player, "You can not use items if you are not in game.");
+    	}
     }
 
 }

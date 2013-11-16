@@ -27,6 +27,7 @@ import com.eyeofender.gortume.listeners.BlockListener;
 import com.eyeofender.gortume.listeners.GameListener;
 import com.eyeofender.gortume.listeners.MenuListener;
 import com.eyeofender.gortume.listeners.MovementListener;
+import com.eyeofender.gortume.listeners.PlayerListener;
 import com.eyeofender.gortume.listeners.PositionListener;
 import com.eyeofender.gortume.listeners.SignListener;
 import com.eyeofender.gortume.util.DatabaseManager;
@@ -42,21 +43,23 @@ public class HideAndGo extends JavaPlugin {
     private static final String JOIN_PREFIX = ChatColor.GOLD + "<" + ChatColor.GREEN + "Join" + ChatColor.GOLD + "> ";
     private static final String LEAVE_PREFIX = ChatColor.GOLD + "<" + ChatColor.RED + "Leave" + ChatColor.GOLD + "> ";
     private static final String OBJECT_PREFIX = ChatColor.GOLD + "<" + ChatColor.YELLOW + "Join" + ChatColor.GOLD + "> ";
+    private static final String ERROR_PREFIX = ChatColor.GOLD + "<" + ChatColor.RED + "Error" + ChatColor.GOLD + "> ";
 
     private Logger log;
     private List<GameManager> activeArenas = new ArrayList<GameManager>();
     private DatabaseManager database;
     private RankHandler rh = new RankHandler(this);
-
+   // public DisguiseCraftAPI dcAPI;
+   
     public RankHandler getRh() {
-        return rh;
-    }
+		return rh;
+	}
 
-    public void setRh(RankHandler rh) {
-        this.rh = rh;
-    }
+	public void setRh(RankHandler rh) {
+		this.rh = rh;
+	}
 
-    public List<GameManager> getActiveArenas() {
+	public List<GameManager> getActiveArenas() {
         return activeArenas;
     }
 
@@ -104,6 +107,7 @@ public class HideAndGo extends JavaPlugin {
         pm.registerEvents(new GameListener(this), this);
         pm.registerEvents(new BlockListener(this), this);
         pm.registerEvents(new SignListener(this), this);
+        pm.registerEvents(new PlayerListener(this), this);
 
         database = new DatabaseManager(this);
     }
@@ -132,6 +136,8 @@ public class HideAndGo extends JavaPlugin {
 
             this.getActiveArenas().add(gmn);
         }
+        
+       // this.setupDisguiseCraft();
     }
 
     /***************************************************************************
@@ -161,17 +167,21 @@ public class HideAndGo extends JavaPlugin {
     public void sendJoin(Player player, String Message) {
         player.sendMessage(JOIN_PREFIX + ChatColor.GRAY + Message);
     }
-
-    public void sendLeave(Player player, String Message) {
-        player.sendMessage(LEAVE_PREFIX + ChatColor.GRAY + Message);
+    
+    public void sendLeave(Player player, String Message){
+    	player.sendMessage(LEAVE_PREFIX + ChatColor.GRAY + Message);
     }
 
     public void sendObject(Player player, String Message) {
         player.sendMessage(OBJECT_PREFIX + ChatColor.GRAY + Message);
     }
-
-    public void sendChatMessage(Player player, String Prefix, String Message, String Sender, ChatColor color, String rank, ChatColor rankColor, ChatColor nameColor) {
-        player.sendMessage(ChatColor.GOLD + "< " + ChatColor.BLUE + "" + Prefix + "" + ChatColor.GOLD + " > " + rankColor + rank + nameColor + "<" + Sender + ">" + " " + color + Message);
+    
+    public void sendError(Player player, String Message) {
+        player.sendMessage(ERROR_PREFIX + ChatColor.GRAY + Message);
+    }
+    
+    public void sendChatMessage(Player player, String Prefix , String Message, String Sender, ChatColor color, String rank, ChatColor rankColor, ChatColor nameColor){
+    	player.sendMessage(ChatColor.GOLD + "< " + ChatColor.BLUE +  "" + Prefix + "" + ChatColor.GOLD + " > " + rankColor + rank + nameColor + "<" + Sender + ">" + " " +  color + Message);
     }
 
     public void sendArgs(Player player) {
@@ -182,6 +192,9 @@ public class HideAndGo extends JavaPlugin {
         return (ChatColor.LIGHT_PURPLE + "" + l.getBlockX() + ", " + l.getBlockY() + ", " + l.getBlockZ());
     }
 
+   // public void setupDisguiseCraft() {
+   // 	dcAPI = DisguiseCraft.getAPI();
+   // }
     /***************************************************************************
      * \
      * 
@@ -308,14 +321,14 @@ public class HideAndGo extends JavaPlugin {
             if (gm != null) {
                 Passes passes = database.getPasses(player);
                 if (passes.hasPass()) {
-                    if (!gm.getGortumePlayers().contains(player)) {
-                        gm.getGortumePlayers().add(player);
-                        passes.removePass();
-                        database.savePasses(passes);
-                        gm.tellArena(player.getName() + " has used there Gortume Pass and now entered the Gortume drawing.");
-                    } else {
-                        sendMessage(player, "You have already used a Gortume Pass.");
-                    }
+                	if(!gm.getGortumePlayers().contains(player)){
+	                    gm.getGortumePlayers().add(player);
+	                    passes.removePass();
+	                    database.savePasses(passes);
+	                    gm.tellArena(player.getName() + " has used there Gortume Pass and now entered the Gortume drawing.");
+                	}else{
+                		sendMessage(player, "You have already used a Gortume Pass.");
+                	}
                 } else {
                     sendMessage(player, ChatColor.RED + "You do not have any passes.");
                 }

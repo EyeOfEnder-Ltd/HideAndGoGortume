@@ -30,6 +30,8 @@ public class ConfigurationHandler {
     private String password;
     private String port;
     private String hostname;
+    
+    private List<String> whiteListed = new ArrayList<String>();
 
     public ConfigurationHandler(HideAndGo plugin) {
         this.plugin = plugin;
@@ -71,6 +73,10 @@ public class ConfigurationHandler {
                 GameManager gmn = new GameManager(plugin, arenaa);
                 plugin.getActiveArenas().add(gmn);
             }
+        }
+        
+        if (plugin.getConfig().contains("whiteListedCommands")){
+        	this.setWhiteListed(plugin.getConfig().getStringList("whiteListedCommands"));
         }
     }
 
@@ -177,4 +183,12 @@ public class ConfigurationHandler {
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
+
+	public List<String> getWhiteListed() {
+		return whiteListed;
+	}
+
+	public void setWhiteListed(List<String> blockedCommands) {
+		this.whiteListed = blockedCommands;
+	}
 }

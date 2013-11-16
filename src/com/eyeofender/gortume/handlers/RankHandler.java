@@ -8,11 +8,24 @@ import com.eyeofender.gortume.HideAndGo;
 public class RankHandler {
 	
 	private HideAndGo plugin;
+
+    public RankHandler(HideAndGo plugin) {
+        this.plugin = plugin;
+    }
 	
 	List<String> developers = new ArrayList<String>();
 	List<String> owners = new ArrayList<String>();
 	List<String> mods = new ArrayList<String>();
+	List<String> admins = new ArrayList<String>();
 	
+	public List<String> getAdmins() {
+		return admins;
+	}
+
+	public void setAdmins(List<String> admins) {
+		this.admins = admins;
+	}
+
 	public List<String> getMods() {
 		return mods;
 	}
@@ -30,6 +43,8 @@ public class RankHandler {
 		 }
 		 if (plugin.getConfig().contains("mods")) {
 			 mods = plugin.getConfig().getStringList("mods");
+		 } if (plugin.getConfig().contains("admins")) {
+			 admins = plugin.getConfig().getStringList("admins");
 		 }
 	}
 	
@@ -47,10 +62,5 @@ public class RankHandler {
 
 	public void setDevelopers(List<String> developers) {
 		this.developers = developers;
-	}
-
-	public RankHandler ( HideAndGo plugin ){
-		this.plugin = plugin;
-		
 	}
 }
