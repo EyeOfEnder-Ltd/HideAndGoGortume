@@ -17,3 +17,12 @@ mods:
 - Queen_Cerii
 admins:
 - DemandedLogic
+
+whiteListedCommands:
+- /countdown
+- /kit
+- /ban
+- /mute
+- /kick
+- /pass
+- /leave

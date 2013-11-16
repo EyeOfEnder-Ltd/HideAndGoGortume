@@ -1,9 +1,10 @@
 name: Gortume
 main: com.eyeofender.gortume.HideAndGo
-version: 1.4.4
+version: 1.4.3
 authors: [avery246813579, LimeByte]
 description: Gortume minigame for TheMass.
 database: false
+depend: [DisguiseCraft]
 commands:
     set:
         description: Sets a Gortume waypoint to your location.
